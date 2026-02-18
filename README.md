@@ -291,8 +291,6 @@ npm run dev
 
 Open your browser: **http://localhost:5173**
 
-<img width="1802" height="688" alt="image" src="https://github.com/user-attachments/assets/46658744-b051-408c-a256-ff1e937935fc" />
-
 
 > **Windows note:** If you see an error about `concurrently` not being found, run `npm install -g concurrently` first.
 
@@ -309,6 +307,8 @@ Open your browser: **http://localhost:5173**
    - **Right:** Each tool call is pre-scanned and blocked before execution, or the output is post-scanned and redacted
 
 Each attack has a clearly labeled heading (`⚡ Secret Exfiltration`, etc.) and numbered turns so you can follow exactly what's happening.
+
+<img width="1802" height="688" alt="image" src="https://github.com/user-attachments/assets/46658744-b051-408c-a256-ff1e937935fc" />
 
 ---
 
