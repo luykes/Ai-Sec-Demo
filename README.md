@@ -291,6 +291,9 @@ npm run dev
 
 Open your browser: **http://localhost:5173**
 
+<img width="1802" height="688" alt="image" src="https://github.com/user-attachments/assets/46658744-b051-408c-a256-ff1e937935fc" />
+
+
 > **Windows note:** If you see an error about `concurrently` not being found, run `npm install -g concurrently` first.
 
 ---
