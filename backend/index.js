@@ -3,6 +3,7 @@ import cors from 'cors';
 import configRouter from './routes/config.js';
 import agentRouter from './routes/agent.js';
 import telemetryRouter from './routes/telemetry.js';
+import jailbreakRouter from './routes/jailbreak.js';
 
 const app = express();
 const PORT = 3001;
@@ -21,7 +22,8 @@ app.use(express.json({ limit: '1mb' }));
 
 // Routes
 app.use('/api/config', configRouter);
-app.use('/api/agent', agentRouter);  // POST /api/agent/run, POST /api/agent/stop
+app.use('/api/agent', agentRouter);       // POST /api/agent/run, POST /api/agent/stop
+app.use('/api/jailbreak', jailbreakRouter); // POST /api/jailbreak/run
 app.use('/api/stream', telemetryRouter);
 
 // Health check
