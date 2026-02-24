@@ -1,0 +1,14 @@
+# Stage 1: Build React app
+FROM node:20-alpine AS build
+WORKDIR /build
+COPY web/package*.json ./
+RUN npm ci
+COPY web/ .
+RUN npm run build
+
+# Stage 2: nginx serves static files + reverse proxies /api
+FROM nginx:alpine
+RUN apk add --no-cache gettext
+COPY --from=build /build/dist /usr/share/nginx/html
+COPY nginx/app.conf.template /etc/nginx/templates/app.conf.template
+EXPOSE 80 443

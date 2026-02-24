@@ -10,11 +10,14 @@ but NEVER decides which tools to call — that is hardcoded.
 import argparse
 import asyncio
 import json
+import os
 import sys
 from datetime import datetime
 from pathlib import Path
 
 import httpx
+
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 
@@ -104,7 +107,7 @@ def ollama_comment(prompt: str, max_tokens: int = 60) -> str:
     """
     try:
         resp = httpx.post(
-            "http://localhost:11434/api/generate",
+            f"{OLLAMA_HOST}/api/generate",
             json={
                 "model": MODEL,
                 "prompt": prompt,

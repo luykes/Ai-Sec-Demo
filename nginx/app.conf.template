@@ -1,0 +1,124 @@
+# Rate limiting zones (in http context via conf.d include)
+# API general: 30 requests/minute per IP
+limit_req_zone $binary_remote_addr zone=api_general:10m rate=30r/m;
+# Attack runner: 2 per minute — each run is expensive (spawns LLM agents)
+limit_req_zone $binary_remote_addr zone=api_attack:10m rate=2r/m;
+# Static assets: generous limit
+limit_req_zone $binary_remote_addr zone=static:10m rate=60r/m;
+
+# ── HTTP — redirect to HTTPS + serve certbot challenges ──────────────────────
+server {
+    listen 80;
+    server_name ${DOMAIN};
+
+    # Hide nginx version in responses
+    server_tokens off;
+
+    # Let certbot verify domain ownership
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    # Redirect everything else to HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# ── HTTPS — main site ─────────────────────────────────────────────────────────
+server {
+    listen 443 ssl;
+    server_name ${DOMAIN};
+
+    # Hide nginx version
+    server_tokens off;
+
+    # ── TLS ────────────────────────────────────────────────────────────────────
+    ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${DOMAIN}/privkey.pem;
+
+    ssl_protocols             TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache         shared:SSL:10m;
+    ssl_session_timeout       10m;
+    ssl_session_tickets       off;
+
+    # OCSP stapling — faster cert validation for clients
+    ssl_stapling        on;
+    ssl_stapling_verify on;
+    resolver            8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout    5s;
+
+    # ── Security headers ───────────────────────────────────────────────────────
+    # Force HTTPS for 1 year (including subdomains)
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    # Block iframing from any external site
+    add_header X-Frame-Options "DENY" always;
+    # Prevent MIME-type sniffing
+    add_header X-Content-Type-Options "nosniff" always;
+    # Restrict referrer info sent to external sites
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    # Permissions policy — disable features the app doesn't use
+    add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()" always;
+    # Content Security Policy — React app (no eval, no external scripts)
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" always;
+
+    # ── Request size limit ─────────────────────────────────────────────────────
+    client_max_body_size 1m;
+
+    # ── React app (static files) ───────────────────────────────────────────────
+    location / {
+        root  /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+
+        limit_req zone=static burst=30 nodelay;
+    }
+
+    # ── SSE streams — disable buffering so events arrive instantly ────────────
+    location /api/stream/ {
+        proxy_pass         http://app:3001;
+        proxy_http_version 1.1;
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   Connection        '';
+        proxy_buffering    off;
+        proxy_cache        off;
+        proxy_read_timeout 300s;
+        chunked_transfer_encoding on;
+
+        limit_req zone=api_general burst=10 nodelay;
+    }
+
+    # ── Attack runner — most expensive endpoint, tightly rate-limited ─────────
+    location /api/agent/run {
+        proxy_pass         http://app:3001;
+        proxy_http_version 1.1;
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+
+        # 2 attack runs per minute per IP
+        limit_req zone=api_attack burst=2 nodelay;
+        limit_req_status 429;
+    }
+
+    # ── All other API calls ───────────────────────────────────────────────────
+    location /api/ {
+        proxy_pass         http://app:3001;
+        proxy_http_version 1.1;
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   Upgrade           $http_upgrade;
+        proxy_set_header   Connection        'upgrade';
+        proxy_cache_bypass $http_upgrade;
+
+        limit_req zone=api_general burst=20 nodelay;
+        limit_req_status 429;
+    }
+}

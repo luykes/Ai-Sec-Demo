@@ -1,87 +1,42 @@
 import React from 'react';
 
-const SCENARIOS = [
-  {
-    id: 'exfiltration',
-    name: 'Secret Exfiltration',
-    icon: '🔑',
-    desc: 'Reads .env files to steal API keys, passwords, and credentials',
-    tools: 'read_file',
-    severity: 'critical',
-  },
-  {
-    id: 'probing',
-    name: 'Internal System Probe',
-    icon: '🔍',
-    desc: 'Maps internal systems, discovers VPN configs, SSH keys, employee data',
-    tools: 'read_file, search_docs',
-    severity: 'high',
-  },
-  {
-    id: 'export',
-    name: 'PII Data Export',
-    icon: '📊',
-    desc: 'Dumps customer database — SSNs, credit cards, addresses, and emails',
-    tools: 'db_export',
-    severity: 'critical',
-  },
-  {
-    id: 'http',
-    name: 'Unauthorized HTTP Fetch',
-    icon: '🌐',
-    desc: 'Exfiltrates data to external attacker server, probes internal endpoints',
-    tools: 'http_fetch',
-    severity: 'high',
-  },
-  {
-    id: 'email',
-    name: 'Email Exfiltration',
-    icon: '📧',
-    desc: 'Collects secrets + PII then sends everything to attacker@evil.com',
-    tools: 'read_file, db_export, send_email',
-    severity: 'high',
-  },
-  {
-    id: 'shell',
-    name: 'Shell Command Injection',
-    icon: '💻',
-    desc: 'Executes arbitrary shell commands, dumps env vars, proves full RCE',
-    tools: 'run_shell',
-    severity: 'critical',
-  },
-];
-
 const SEVERITY_COLORS = {
   critical: '#ff4444',
   high: '#ffaa44',
   medium: '#44aaff',
 };
 
-export default function AttackPanel({ onLaunch, isRunning, onStop }) {
+export default function AttackPanel({ scenarios, categoryName, onLaunch, isRunning, onStop }) {
   return (
     <div style={styles.panel}>
       <div style={styles.panelHeader}>
         <div style={styles.headerLeft}>
-          <span style={styles.panelTitle}>Attack Scenarios</span>
-          <span style={styles.scenarioCount}>6 scenarios — all run in sequence</span>
+          <span style={styles.panelTitle}>{categoryName}</span>
+          <span style={styles.scenarioCount}>
+            {scenarios.length} scenarios — all run in sequence
+          </span>
         </div>
-        <span style={styles.hint}>Powered by Ollama llama3.2 — scripted tool execution, LLM commentary</span>
+        <span style={styles.hint}>
+          Powered by Ollama llama3.2 — scripted tool execution, LLM commentary
+        </span>
       </div>
 
       <div style={styles.scenarioGrid}>
-        {SCENARIOS.map((scenario, i) => (
+        {scenarios.map((scenario, i) => (
           <div key={scenario.id} style={styles.scenarioCard}>
             <div style={styles.cardTop}>
               <div style={styles.cardLeft}>
                 <span style={styles.stepNum}>{i + 1}</span>
                 <span style={styles.cardIcon}>{scenario.icon}</span>
               </div>
-              <span style={{
-                ...styles.severityBadge,
-                color: SEVERITY_COLORS[scenario.severity],
-                borderColor: SEVERITY_COLORS[scenario.severity],
-                background: `${SEVERITY_COLORS[scenario.severity]}15`,
-              }}>
+              <span
+                style={{
+                  ...styles.severityBadge,
+                  color: SEVERITY_COLORS[scenario.severity],
+                  borderColor: SEVERITY_COLORS[scenario.severity],
+                  background: `${SEVERITY_COLORS[scenario.severity]}15`,
+                }}
+              >
                 {scenario.severity}
               </span>
             </div>
@@ -106,12 +61,12 @@ export default function AttackPanel({ onLaunch, isRunning, onStop }) {
           {isRunning ? (
             <>
               <span style={styles.spinner} />
-              Running All 6 Attacks...
+              Running {scenarios.length} Attacks...
             </>
           ) : (
             <>
-              <span>⚡</span>
-              Launch All 6 Attacks
+              <span style={styles.launchBtnGlyph}>&gt;_</span>
+              Execute All {scenarios.length} Attacks
             </>
           )}
         </button>
@@ -128,14 +83,14 @@ export default function AttackPanel({ onLaunch, isRunning, onStop }) {
 
 const styles = {
   panel: {
-    background: '#150022',
-    border: '1px solid #2d1050',
-    borderRadius: 12,
+    background: '#001100',
+    border: '1px solid #003300',
+    borderRadius: 4,
     overflow: 'hidden',
   },
   panelHeader: {
     padding: '14px 18px',
-    borderBottom: '1px solid #2d1050',
+    borderBottom: '1px solid #003300',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -150,21 +105,21 @@ const styles = {
   panelTitle: {
     fontSize: 13,
     fontWeight: 600,
-    color: '#e8d5ff',
+    color: '#00ff41',
     textTransform: 'uppercase',
     letterSpacing: '1px',
   },
   scenarioCount: {
     fontSize: 11,
-    color: '#7b2fff',
-    background: 'rgba(123, 47, 255, 0.12)',
-    border: '1px solid rgba(123, 47, 255, 0.3)',
+    color: '#00b32c',
+    background: 'rgba(0, 255, 65, 0.08)',
+    border: '1px solid rgba(0, 255, 65, 0.2)',
     borderRadius: 4,
     padding: '2px 8px',
   },
   hint: {
     fontSize: 11,
-    color: '#6b4f8a',
+    color: '#004400',
   },
   scenarioGrid: {
     display: 'grid',
@@ -173,9 +128,9 @@ const styles = {
     padding: 16,
   },
   scenarioCard: {
-    background: '#1e0035',
-    border: '1px solid #2d1050',
-    borderRadius: 8,
+    background: '#001a00',
+    border: '1px solid #002500',
+    borderRadius: 4,
     padding: '10px 12px',
     display: 'flex',
     flexDirection: 'column',
@@ -194,8 +149,8 @@ const styles = {
   stepNum: {
     fontSize: 10,
     fontWeight: 700,
-    color: '#7b2fff',
-    background: 'rgba(123, 47, 255, 0.15)',
+    color: '#00b32c',
+    background: 'rgba(0, 255, 65, 0.1)',
     borderRadius: '50%',
     width: 18,
     height: 18,
@@ -206,7 +161,10 @@ const styles = {
     fontFamily: 'JetBrains Mono, monospace',
   },
   cardIcon: {
-    fontSize: 15,
+    fontSize: 13,
+    fontFamily: 'JetBrains Mono, monospace',
+    color: '#00b32c',
+    letterSpacing: '-1px',
   },
   severityBadge: {
     fontSize: 9,
@@ -220,12 +178,12 @@ const styles = {
   cardName: {
     fontSize: 11,
     fontWeight: 600,
-    color: '#e8d5ff',
+    color: '#00ff41',
     lineHeight: 1.3,
   },
   cardDesc: {
     fontSize: 10,
-    color: '#6b4f8a',
+    color: '#004400',
     lineHeight: 1.4,
   },
   cardTools: {
@@ -234,7 +192,7 @@ const styles = {
   toolCode: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 9,
-    color: '#44aaff',
+    color: '#00b32c',
   },
   actions: {
     padding: '0 16px 16px',
@@ -243,10 +201,10 @@ const styles = {
   },
   launchBtn: {
     flex: 1,
-    background: 'linear-gradient(135deg, #7b2fff, #5b21b6)',
-    border: 'none',
-    borderRadius: 8,
-    color: '#fff',
+    background: 'linear-gradient(135deg, #003b00, #001a00)',
+    border: '1px solid #00ff41',
+    borderRadius: 4,
+    color: '#00ff41',
     padding: '12px 20px',
     fontSize: 14,
     fontWeight: 700,
@@ -255,19 +213,25 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    boxShadow: '0 4px 20px rgba(123, 47, 255, 0.4)',
+    boxShadow: '0 4px 20px rgba(0, 255, 65, 0.25)',
     transition: 'all 0.2s',
-    letterSpacing: '0.3px',
+    letterSpacing: '1px',
   },
   launchBtnRunning: {
-    background: 'linear-gradient(135deg, #4a1a99, #2d0f5e)',
+    background: 'rgba(0, 59, 0, 0.4)',
     boxShadow: 'none',
     cursor: 'not-allowed',
+    border: '1px solid #003300',
+    color: '#00b32c',
+  },
+  launchBtnGlyph: {
+    color: '#00b32c',
+    fontFamily: 'JetBrains Mono, monospace',
   },
   stopBtn: {
     background: 'rgba(255, 68, 68, 0.1)',
     border: '1px solid #ff4444',
-    borderRadius: 8,
+    borderRadius: 4,
     color: '#ff4444',
     padding: '12px 16px',
     fontSize: 13,
@@ -277,8 +241,8 @@ const styles = {
   spinner: {
     width: 14,
     height: 14,
-    border: '2px solid rgba(255,255,255,0.3)',
-    borderTop: '2px solid white',
+    border: '2px solid rgba(0, 255, 65, 0.3)',
+    borderTop: '2px solid #00ff41',
     borderRadius: '50%',
     display: 'inline-block',
     animation: 'spin 0.8s linear infinite',

@@ -1,0 +1,28 @@
+# Version control
+.git/
+.gitignore
+
+# Secrets — never bake into images
+.env
+.env.*
+backend/.runtime-config.json
+
+# Dependencies — rebuilt inside image
+**/node_modules/
+agent/venv/
+
+# Build artefacts
+web/dist/
+
+# Cert directories (mounted at runtime)
+certbot-etc/
+certbot-www/
+
+# Logs and OS junk
+*.log
+.DS_Store
+Thumbs.db
+
+# Docs
+README.md
+*.pdf

@@ -1,22 +1,22 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 const LEVEL_STYLES = {
-  BLOCKED: { color: '#ff4444', bg: 'rgba(255, 68, 68, 0.08)', icon: '🚫', bold: true },
-  OUTPUT_BLOCKED: { color: '#ff6600', bg: 'rgba(255, 102, 0, 0.10)', icon: '🔒', bold: true },
-  ALLOWED: { color: '#44ff88', bg: 'rgba(68, 255, 136, 0.06)', icon: '✓', bold: false },
-  MODIFIED: { color: '#ffcc44', bg: 'rgba(255, 204, 68, 0.08)', icon: '✂', bold: true },
-  DETECTED: { color: '#ffaa44', bg: 'rgba(255, 170, 68, 0.08)', icon: '⚠', bold: false },
-  TOOL_CALL: { color: '#44aaff', bg: 'rgba(68, 170, 255, 0.06)', icon: '→', bold: false },
-  TOOL_RESULT: { color: '#d4b8ff', bg: 'rgba(212, 184, 255, 0.05)', icon: '←', bold: false },
-  SYSTEM: { color: '#6b4f8a', bg: 'transparent', icon: '·', bold: false },
-  INIT: { color: '#7b5fc0', bg: 'transparent', icon: '◆', bold: false },
-  DONE: { color: '#a855f7', bg: 'rgba(168, 85, 247, 0.06)', icon: '✦', bold: false },
-  AGENT: { color: '#e8d5ff', bg: 'transparent', icon: '⬡', bold: false },
-  ERROR: { color: '#ff6666', bg: 'rgba(255, 68, 68, 0.05)', icon: '✕', bold: false },
-  INFO: { color: '#9d7dbf', bg: 'transparent', icon: '·', bold: false },
-  TOOLS: { color: '#7b2fff', bg: 'transparent', icon: '⚙', bold: false },
-  ATTACK: { color: '#f0c0ff', bg: 'rgba(192, 132, 252, 0.15)', icon: '⚡', bold: true },
-  TURN: { color: '#9b6fd4', bg: 'rgba(123, 47, 255, 0.08)', icon: '▶', bold: true },
+  BLOCKED:       { color: '#ff4444', bg: 'rgba(255, 68, 68, 0.08)',    icon: '🚫', bold: true  },
+  OUTPUT_BLOCKED:{ color: '#ff6600', bg: 'rgba(255, 102, 0, 0.10)',    icon: '🔒', bold: true  },
+  ALLOWED:       { color: '#00ff41', bg: 'rgba(0, 255, 65, 0.06)',     icon: '✓',  bold: false },
+  MODIFIED:      { color: '#ffcc44', bg: 'rgba(255, 204, 68, 0.08)',   icon: '✂',  bold: true  },
+  DETECTED:      { color: '#ffaa44', bg: 'rgba(255, 170, 68, 0.08)',   icon: '⚠',  bold: false },
+  TOOL_CALL:     { color: '#44aaff', bg: 'rgba(68, 170, 255, 0.06)',   icon: '→',  bold: false },
+  TOOL_RESULT:   { color: '#00b32c', bg: 'rgba(0, 179, 44, 0.04)',     icon: '←',  bold: false },
+  SYSTEM:        { color: '#004400', bg: 'transparent',                icon: '·',  bold: false },
+  INIT:          { color: '#00b32c', bg: 'transparent',                icon: '◆',  bold: false },
+  DONE:          { color: '#00ff41', bg: 'rgba(0, 255, 65, 0.06)',     icon: '✦',  bold: false },
+  AGENT:         { color: '#00ff41', bg: 'transparent',                icon: '⬡',  bold: false },
+  ERROR:         { color: '#ff6666', bg: 'rgba(255, 68, 68, 0.05)',    icon: '✕',  bold: false },
+  INFO:          { color: '#005500', bg: 'transparent',                icon: '·',  bold: false },
+  TOOLS:         { color: '#00b32c', bg: 'transparent',                icon: '⚙',  bold: false },
+  ATTACK:        { color: '#00ff41', bg: 'rgba(0, 255, 65, 0.10)',     icon: '⚡', bold: true  },
+  TURN:          { color: '#00b32c', bg: 'rgba(0, 179, 44, 0.06)',     icon: '▶',  bold: true  },
 };
 
 function getStyle(level) {
@@ -70,7 +70,7 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
   return (
     <div style={{
       ...styles.pane,
-      ...(isActive ? { boxShadow: `0 0 20px ${sideGlowColor || 'rgba(123, 47, 255, 0.3)'}` } : {}),
+      ...(isActive ? { boxShadow: `0 0 20px ${sideGlowColor || 'rgba(0, 255, 65, 0.2)'}` } : {}),
     }}>
       <div style={styles.paneHeader}>
         <div style={styles.paneTitle}>
@@ -85,8 +85,8 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
           <span style={styles.titleText}>{title}</span>
           <span style={{
             ...styles.connDot,
-            background: connected ? '#44ff88' : '#6b4f8a',
-            boxShadow: connected ? '0 0 6px #44ff88' : 'none',
+            background: connected ? '#00ff41' : '#003300',
+            boxShadow: connected ? '0 0 6px #00ff41' : 'none',
           }} title={connected ? 'Connected' : 'Disconnected'} />
         </div>
         <div style={styles.paneActions}>
@@ -100,7 +100,7 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
           <div style={styles.emptyState}>
             <div style={styles.emptyIcon}>⬡</div>
             <div style={styles.emptyText}>Waiting for attack to launch...</div>
-            <div style={styles.emptyHint}>Select a scenario and click Launch Attack</div>
+            <div style={styles.emptyHint}>Select a scenario and click Execute Attack</div>
           </div>
         )}
 
@@ -138,9 +138,9 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
 
 const styles = {
   pane: {
-    background: '#150022',
-    border: '1px solid #2d1050',
-    borderRadius: 12,
+    background: '#001100',
+    border: '1px solid #003300',
+    borderRadius: 4,
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
@@ -151,8 +151,8 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px 14px',
-    borderBottom: '1px solid #2d1050',
-    background: 'rgba(0,0,0,0.2)',
+    borderBottom: '1px solid #002200',
+    background: 'rgba(0, 0, 0, 0.3)',
     flexShrink: 0,
   },
   paneTitle: {
@@ -172,7 +172,7 @@ const styles = {
   titleText: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#9d7dbf',
+    color: '#005500',
   },
   connDot: {
     width: 7,
@@ -187,18 +187,18 @@ const styles = {
   },
   logCount: {
     fontSize: 10,
-    color: '#6b4f8a',
+    color: '#004400',
     fontFamily: 'JetBrains Mono, monospace',
   },
   clearBtn: {
     background: 'transparent',
-    border: '1px solid #2d1050',
+    border: '1px solid #002200',
     borderRadius: 4,
-    color: '#6b4f8a',
+    color: '#004400',
     fontSize: 10,
     padding: '3px 8px',
     cursor: 'pointer',
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: 'JetBrains Mono, monospace',
   },
   logContainer: {
     flex: 1,
@@ -217,22 +217,22 @@ const styles = {
     justifyContent: 'center',
     padding: '60px 20px',
     gap: 10,
-    color: '#2d1050',
+    color: '#002200',
   },
   emptyIcon: {
     fontSize: 40,
-    color: '#2d1050',
+    color: '#002200',
   },
   emptyText: {
     fontSize: 13,
-    color: '#3d1060',
+    color: '#003300',
     fontWeight: 500,
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: 'JetBrains Mono, monospace',
   },
   emptyHint: {
     fontSize: 11,
-    color: '#2d1050',
-    fontFamily: 'Inter, sans-serif',
+    color: '#002200',
+    fontFamily: 'JetBrains Mono, monospace',
   },
   logEntry: {
     display: 'flex',
@@ -243,7 +243,7 @@ const styles = {
     wordBreak: 'break-word',
   },
   logTimestamp: {
-    color: '#3d1060',
+    color: '#003300',
     flexShrink: 0,
     fontSize: 10,
     paddingTop: 1,
@@ -264,7 +264,7 @@ const styles = {
     paddingTop: 2,
   },
   logMessage: {
-    color: '#9d7dbf',
+    color: '#005500',
     whiteSpace: 'pre-wrap',
     flex: 1,
   },

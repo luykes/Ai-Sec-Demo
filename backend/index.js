@@ -7,8 +7,17 @@ import telemetryRouter from './routes/telemetry.js';
 const app = express();
 const PORT = 3001;
 
-app.use(cors());
-app.use(express.json());
+// Restrict CORS to the frontend origin only.
+// ALLOWED_ORIGIN is set in docker-compose (https://<DOMAIN>).
+// Falls back to localhost for local dev.
+const allowedOrigin = process.env.ALLOWED_ORIGIN || 'http://localhost:5173';
+app.use(cors({
+  origin: allowedOrigin,
+  methods: ['GET', 'POST'],
+  credentials: false,
+}));
+
+app.use(express.json({ limit: '1mb' }));
 
 // Routes
 app.use('/api/config', configRouter);

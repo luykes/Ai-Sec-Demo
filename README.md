@@ -4,9 +4,13 @@ A live, side-by-side demonstration of how an LLM agent can attack an MCP (Model 
 
 The left pane runs a **vulnerable** MCP server with zero guardrails. The right pane runs an identical server with **Prompt Security** enforcement. Watch the same 6 attacks succeed on the left while being blocked on the right.
 
+A second category — **Employee GenAI Protection** — demonstrates how Prompt Security's browser extension intercepts sensitive data (credentials, PII, proprietary code) that employees accidentally paste into public AI tools like ChatGPT, Gemini, Copilot, and Claude.
+
 ---
 
 ## What This Demo Shows
+
+### Category 1: Homegrown App Protection (MCP Tool Abuse)
 
 | | Vulnerable Pane (left) | Protected Pane (right) |
 |---|---|---|
@@ -16,6 +20,10 @@ The left pane runs a **vulnerable** MCP server with zero guardrails. The right p
 | Result | Attacker gets secrets | Blocked or sanitized |
 
 The Python agent uses **Ollama (llama3.2)** to generate authentic attacker commentary, but tool execution is **fully scripted** — Ollama never decides what to call. This ensures consistent, reproducible demos.
+
+### Category 2: Employee GenAI Protection
+
+Demonstrates 9 risk scenarios — 6 policy-violating prompts and 3 safe prompts. Each scenario can be launched directly into ChatGPT, Gemini, Copilot, or Claude with one click. The Prompt Security browser extension intercepts the submission in real time.
 
 ---
 
@@ -35,7 +43,7 @@ The Python agent uses **Ollama (llama3.2)** to generate authentic attacker comme
 ## Architecture
 
 ```
-Browser :5173 (React + Vite)
+Browser (React + Vite)
     │
     └── Express Backend :3001
             │
@@ -51,271 +59,278 @@ Real-time telemetry streams from backend → browser over **Server-Sent Events (
 
 ---
 
-## Prerequisites
+## Option A: Local Development
 
-### All Platforms
+### Prerequisites
 
 | Tool | Min Version | Notes |
 |------|------------|-------|
-| Node.js | 18+ | JavaScript runtime for backend + MCP servers |
-| npm | 9+ | Comes with Node.js |
+| Node.js | 18+ | JavaScript runtime |
 | Python | 3.10+ | For the attack agent |
 | Ollama | Latest | Local LLM runtime |
-| llama3.2 model | — | ~2 GB download via `ollama pull llama3.2` |
-| Prompt Security API key | Required for right-pane blocking — enter in the UI |
+| llama3.2 model | — | ~2 GB via `ollama pull llama3.2` |
+| Prompt Security API key | Optional | Required for right-pane blocking — enter in the UI |
 
 ---
 
-## Installation — macOS
+### macOS
 
-### Step 1 — Install Node.js
+**1. Install Node.js**
 
-**Option A: Official installer (easiest)**
-1. Go to https://nodejs.org
-2. Download the **LTS** version (18.x or higher)
-3. Run the `.pkg` installer
-4. Verify: open Terminal and run:
-   ```bash
-   node --version   # should print v18.x.x or higher
-   npm --version    # should print 9.x.x or higher
-   ```
-
-**Option B: Homebrew**
 ```bash
-# Install Homebrew first if you don't have it:
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
+# Option A: Homebrew
 brew install node
-node --version
+
+# Option B: Download LTS installer from https://nodejs.org
 ```
 
----
+Verify: `node --version` (should be 18+)
 
-### Step 2 — Install Python 3.10+
+**2. Install Python 3.10+**
 
-macOS ships with Python 3 but it may be an older version. Check first:
 ```bash
-python3 --version
-```
-
-If the version is below 3.10, install a newer one:
-
-**Option A: Official installer**
-1. Go to https://python.org/downloads
-2. Download the latest **3.12.x macOS installer**
-3. Run the `.pkg` file
-4. Verify:
-   ```bash
-   python3 --version   # should print Python 3.10 or higher
-   ```
-
-**Option B: Homebrew**
-```bash
+# Option A: Homebrew
 brew install python@3.12
-python3 --version
+
+# Option B: Download from https://python.org/downloads
 ```
 
----
+**3. Install and start Ollama**
 
-### Step 3 — Install Ollama
-
-1. Go to https://ollama.com
-2. Click **Download for Mac**
-3. Open the downloaded `.zip`, drag **Ollama** to Applications
-4. Launch Ollama from Applications — it will appear in the menu bar
-5. Verify it's running:
-   ```bash
-   curl http://localhost:11434/api/tags
-   ```
-   You should see a JSON response (even if no models yet).
-
----
-
-### Step 4 — Pull the llama3.2 model
+Download from https://ollama.com, drag to Applications, launch it (appears in menu bar), then pull the model:
 
 ```bash
 ollama pull llama3.2
 ```
 
-This downloads ~2 GB. Wait for it to complete. Verify:
-```bash
-ollama list
-# Should show: llama3.2   ...
-```
-
----
-
-### Step 5 — Clone the repository
+**4. Clone and install**
 
 ```bash
 git clone https://github.com/luykes/PromptAI_MCP_Attack.git
 cd PromptAI_MCP_Attack
-```
-
----
-
-### Step 6 — Install Node.js dependencies
-
-```bash
 npm run install:all
-```
-
-This installs dependencies for the root, backend, web frontend, and MCP server — all in one command.
-
----
-
-### Step 7 — Set up the Python virtual environment
-
-```bash
 python3 -m venv agent/venv
 agent/venv/bin/pip install -r agent/requirements.txt
 ```
 
-Verify the packages installed correctly:
-```bash
-agent/venv/bin/python3 -c "import mcp, httpx; print('Python deps OK')"
-```
-
----
-
-### Step 8 — Start the demo
-
-Make sure Ollama is running (it should be in your menu bar), then:
+**5. Start**
 
 ```bash
 npm run dev
 ```
 
-You will see 4 processes start in the terminal:
-```
-[MCP-RAW]  MCP server on :8787 — security DISABLED
-[MCP-SAFE] MCP server on :8788 — security ENABLED
-[BACKEND]  API server on :3001
-[WEB]      Vite dev server on :5173
-```
-
-Open your browser: **http://localhost:5173**
+Open **http://localhost:5173**
 
 ---
 
-## Installation — Windows
+### Windows
 
-### Step 1 — Install Node.js
+**1. Install Node.js** — download LTS `.msi` from https://nodejs.org, run the installer.
 
-1. Go to https://nodejs.org
-2. Download the **LTS Windows Installer (.msi)**
-3. Run the installer — accept all defaults
-4. Open **Command Prompt** or **PowerShell** and verify:
-   ```cmd
-   node --version
-   npm --version
-   ```
+**2. Install Python 3.10+** — download from https://python.org/downloads. **Check "Add Python to PATH"** on the first screen.
 
----
-
-### Step 2 — Install Python 3.10+
-
-1. Go to https://python.org/downloads
-2. Download the latest **3.12.x Windows installer**
-3. **IMPORTANT:** On the first screen, check ✅ **"Add Python to PATH"** before clicking Install
-4. Click **Install Now**
-5. Verify in Command Prompt:
-   ```cmd
-   python --version
-   ```
-   > On Windows the command is `python`, not `python3`
-
----
-
-### Step 3 — Install Ollama
-
-1. Go to https://ollama.com
-2. Click **Download for Windows**
-3. Run the installer
-4. Ollama starts automatically and appears in the system tray
-5. Verify it's running — open Command Prompt:
-   ```cmd
-   curl http://localhost:11434/api/tags
-   ```
-
----
-
-### Step 4 — Pull the llama3.2 model
+**3. Install Ollama** — download from https://ollama.com, run the installer, then:
 
 ```cmd
 ollama pull llama3.2
 ```
 
-Wait for the ~2 GB download to complete.
-
----
-
-### Step 5 — Clone the repository
+**4. Clone and install**
 
 ```cmd
 git clone https://github.com/luykes/PromptAI_MCP_Attack.git
 cd PromptAI_MCP_Attack
-```
-
-> If you don't have Git: download from https://git-scm.com/download/win
-
----
-
-### Step 6 — Install Node.js dependencies
-
-```cmd
 npm run install:all
-```
-
----
-
-### Step 7 — Set up the Python virtual environment
-
-```cmd
 python -m venv agent\venv
 agent\venv\Scripts\pip install -r agent\requirements.txt
 ```
 
-Verify:
-```cmd
-agent\venv\Scripts\python -c "import mcp, httpx; print('Python deps OK')"
-```
-
----
-
-### Step 8 — Start the demo
+**5. Start**
 
 ```cmd
 npm run dev
 ```
 
-Open your browser: **http://localhost:5173**
-
+Open **http://localhost:5173**
 
 > **Windows note:** If you see an error about `concurrently` not being found, run `npm install -g concurrently` first.
 
 ---
 
+## Option B: VPS Deployment (Docker + Let's Encrypt)
+
+Deploy to any Linux VPS (Hetzner, Vultr, DigitalOcean, etc.) with full HTTPS, automatic SSL renewal, and all services running in Docker containers.
+
+### Requirements
+
+- A Linux VPS with **8 GB RAM** (needed for Ollama — Hetzner CX31 at ~AUD $14/month is recommended)
+- Ubuntu 22.04 LTS
+- A domain name pointed at the server's IP (free: [DuckDNS](https://www.duckdns.org) — takes 2 minutes)
+- Docker installed on the server
+
+### Architecture (Production)
+
+```
+Internet
+    │  443 (HTTPS)
+    ▼
+ nginx container          ← TLS termination, security headers, rate limiting
+    │
+    ├── /              → React app (static files, built into nginx image)
+    └── /api/*         → app container :3001
+                              │
+                              ├── Express API
+                              ├── MCP Raw server  :8787 (internal only)
+                              ├── MCP Safe server :8788 (internal only)
+                              └── Python agent → ollama container :11434
+```
+
+Ports 3001, 8787, 8788, and 11434 are **never exposed to the internet** — Docker internal network only.
+
+### Deploy Steps
+
+**1. Provision the server**
+
+Spin up Ubuntu 22.04 LTS on your VPS provider. SSH in as root.
+
+**2. Install Docker**
+
+```bash
+curl -fsSL https://get.docker.com | sh
+```
+
+**3. Clone the repository**
+
+```bash
+git clone https://github.com/luykes/PromptAI_MCP_Attack.git /opt/promptai
+cd /opt/promptai
+```
+
+**4. Configure environment**
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+Fill in these two required fields:
+
+```env
+DOMAIN=yourname.duckdns.org
+LE_EMAIL=your@email.com
+```
+
+The Prompt Security API key can be left blank here — it can be entered via the web UI after deployment.
+
+**5. Set up the firewall**
+
+```bash
+sudo bash setup-firewall.sh
+```
+
+This blocks everything except SSH (22), HTTP (80), and HTTPS (443).
+
+**6. Run the one-time setup script**
+
+```bash
+bash init-letsencrypt.sh
+```
+
+This script:
+- Obtains a Let's Encrypt SSL certificate for your domain
+- Starts all 4 Docker containers (nginx, certbot, app, ollama)
+- Downloads the `llama3.2:3b` model into Ollama (~2 GB)
+
+The app will be live at `https://yourdomain.com` when it finishes.
+
+---
+
+### What's Inside the Containers
+
+| Container | Base Image | What it runs |
+|-----------|-----------|-------------|
+| `nginx` | nginx:alpine + React build | Serves React app, terminates SSL, proxies `/api/` |
+| `certbot` | certbot/certbot | Renews Let's Encrypt cert automatically every 12 hours |
+| `app` | node:20-alpine + Python | Express API + MCP servers (8787/8788) + Python agent |
+| `ollama` | ollama/ollama | Local LLM (llama3.2:3b) |
+
+### Managing the Deployment
+
+```bash
+# Check all containers are healthy
+docker compose ps
+
+# View live logs
+docker compose logs -f
+
+# Stop everything
+docker compose down
+
+# Start (after a server reboot)
+docker compose up -d
+
+# Rebuild after a code change
+docker compose build && docker compose up -d
+```
+
+### SSL Certificate
+
+SSL renewal is **fully automatic**. The `certbot` container checks every 12 hours and renews if the certificate is within 30 days of expiry. No manual action ever needed.
+
+---
+
+### Security Measures Applied
+
+| Layer | Measure |
+|-------|---------|
+| OS | ufw firewall — only ports 22/80/443 open |
+| nginx | HSTS, CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy |
+| nginx | `server_tokens off` — nginx version hidden |
+| nginx | Rate limiting — 30 req/min general, 2 req/min on attack runner |
+| nginx | TLS 1.2/1.3 only, OCSP stapling |
+| Docker | All containers run with `no-new-privileges` |
+| Docker | App container drops all capabilities (`cap_drop: ALL`) |
+| Docker | Internal ports (3001, 8787, 8788, 11434) not exposed |
+| App | Express runs as non-root user (UID 1001) |
+| App | CORS restricted to `https://<DOMAIN>` only |
+| App | Request body capped at 1 MB |
+| Secrets | `.env` permissions set to 600 (owner read only) |
+| Build | `.dockerignore` prevents secrets from entering Docker images |
+
+---
+
 ## Running the Demo
 
-1. Open **http://localhost:5173**
-2. The dashboard shows two side-by-side telemetry panes — **Vulnerable** (left) and **Protected** (right)
-3. Click **⚙ Config** in the top bar → enter your Prompt Security API key → and Username you using in PromptAI → Save
-4. Click **Launch All 6 Attacks**
-5. Watch both panes in real time:
-   - **Left:** Each attack executes — secrets, PII, and shell output are visible
-   - **Right:** Each tool call is pre-scanned and blocked before execution, or the output is post-scanned and redacted
-
-Each attack has a clearly labeled heading (`⚡ Secret Exfiltration`, etc.) and numbered turns so you can follow exactly what's happening.
+1. Open the app URL (local: `http://localhost:5173` / VPS: `https://yourdomain.com`)
+2. From the landing page, click **Enter**
+3. Choose a category:
+   - **Homegrown App Protection** — side-by-side MCP attack demo
+   - **Employee GenAI Protection** — browser-based AI tool risk scenarios
+4. Click **⚙ Config** in the top bar → enter your Prompt Security API key and your username → Save
+5. For the MCP demo: click **Launch All 6 Attacks** and watch both panes in real time
 
 <img width="1802" height="688" alt="image" src="https://github.com/user-attachments/assets/46658744-b051-408c-a256-ff1e937935fc" />
+
+---
+
+## Optional: Prompt Security API Key
+
+Without an API key the demo still runs — the protected pane defaults to "allow".
+
+To see real blocking:
+1. Get an API key from https://prompt.security
+2. Click **⚙ Config** in the top bar
+3. Paste your key and click **Save**
+
+The key is stored in `backend/.runtime-config.json` (gitignored — never committed).
 
 ---
 
 ## Troubleshooting
 
 ### "ModuleNotFoundError: No module named 'httpx'"
-The agent needs to use the venv Python, not system Python. This is handled automatically by the backend. If you see this, make sure you ran the venv setup step:
+
+The agent venv wasn't set up. Run:
 ```bash
 # macOS/Linux
 agent/venv/bin/pip install -r agent/requirements.txt
@@ -325,35 +340,46 @@ agent\venv\Scripts\pip install -r agent\requirements.txt
 ```
 
 ### "Is the MCP server running on port 8787?"
-The MCP servers are started by `npm run dev`. If you see this error, either:
-- `npm run dev` isn't running, or
-- A port is already in use. Check: `lsof -i :8787` (Mac) or `netstat -ano | findstr 8787` (Windows)
 
-### Ollama commentary is empty / "I can't fulfill this request"
-Ollama (llama3.2) has built-in safety filters. If it refuses attacker-framing prompts, the commentary will be blank or a refusal — this is expected and the demo still works. The tool calls and results are what matter visually.
-
-### npm run dev fails on Windows with 'concurrently' error
-```cmd
-npm install
-npm run dev
-```
-Or install globally: `npm install -g concurrently cross-env`
-
-### Port already in use
-Stop any running instances first, then:
+`npm run dev` isn't running, or a port is already in use:
 ```bash
-# macOS — kill processes on MCP ports
+# macOS — free the ports
 kill -9 $(lsof -ti:8787) 2>/dev/null
 kill -9 $(lsof -ti:8788) 2>/dev/null
 kill -9 $(lsof -ti:3001) 2>/dev/null
 ```
 
-### Python venv not found (Windows path issues)
-Make sure you're in the `PromptAI_MCP_Attack` directory and use backslashes:
+### Ollama commentary is blank
+
+Ollama's built-in filters may refuse attacker-framing prompts. The demo still works — tool results are what matter visually.
+
+### VPS — nginx container won't start
+
+The SSL cert may not exist yet. Run `init-letsencrypt.sh` first. If already run, check:
+```bash
+docker compose logs nginx
+```
+
+### VPS — "Port 80 is already in use" during init
+
+Something else is on port 80. Stop it first:
+```bash
+sudo systemctl stop apache2   # or nginx, if system nginx is installed
+```
+
+### Port already in use (local)
+
+```bash
+kill -9 $(lsof -ti:8787) 2>/dev/null
+kill -9 $(lsof -ti:8788) 2>/dev/null
+kill -9 $(lsof -ti:3001) 2>/dev/null
+```
+
+### Windows — 'concurrently' not found
+
 ```cmd
-cd PromptAI_MCP_Attack
-python -m venv agent\venv
-agent\venv\Scripts\pip install -r agent\requirements.txt
+npm install -g concurrently cross-env
+npm run dev
 ```
 
 ---
@@ -362,35 +388,53 @@ agent\venv\Scripts\pip install -r agent\requirements.txt
 
 ```
 PromptAI_MCP_Attack/
-├── package.json          # Root — npm run dev starts everything
-├── .env.example          # Template (copy to .env for local overrides)
+├── package.json              # Root — npm run dev starts everything locally
+├── .env.example              # Template — copy to .env and fill in values
 │
-├── mcp-server/           # Node.js MCP server (6 vulnerable tools)
-│   ├── server.js         # Express + MCP SDK, Prompt Security enforcement
-│   └── assets/           # Mock sensitive data (ALL FAKE — safe to commit)
-│       ├── .env          # Fake API keys / credentials
-│       ├── customers.csv # Fake PII (names, SSNs, credit cards)
-│       └── handbook.md   # Fake internal docs (VPN, SSH, passwords)
+├── docker-compose.yml        # Production: 4 containers (nginx, certbot, app, ollama)
+├── Dockerfile.nginx          # Multi-stage: builds React, then nginx serves it
+├── Dockerfile.app            # Node 20 + Python: Express + MCP servers + agent
+├── docker-entrypoint.sh      # Starts MCP servers in background, then Express
+├── init-letsencrypt.sh       # One-time setup: get cert + start all containers
+├── setup-firewall.sh         # ufw rules: allow only 22/80/443
 │
-├── agent/                # Python attacker agent
-│   ├── mcp_agent.py      # Scripted tool calls + Ollama commentary
-│   ├── requirements.txt  # mcp, httpx, ollama
-│   └── venv/             # Python virtual environment (gitignored)
+├── nginx/
+│   └── app.conf.template     # nginx config (HTTPS, rate limiting, security headers)
 │
-├── backend/              # Express API bridge
-│   ├── index.js          # Server entry point
+├── mcp-server/               # Node.js MCP server (6 vulnerable tools)
+│   ├── server.js             # Express + MCP SDK, Prompt Security enforcement
+│   └── assets/               # Mock sensitive data (ALL FAKE — safe to commit)
+│       ├── .env              # Fake API keys / credentials
+│       ├── customers.csv     # Fake PII (names, SSNs, credit cards)
+│       └── handbook.md       # Fake internal docs (VPN, SSH, passwords)
+│
+├── agent/                    # Python attacker agent
+│   ├── mcp_agent.py          # Scripted tool calls + Ollama commentary
+│   ├── requirements.txt      # mcp, httpx, ollama
+│   └── venv/                 # Python virtual environment (gitignored)
+│
+├── backend/                  # Express API bridge
+│   ├── index.js              # Server entry point + CORS config
 │   └── routes/
-│       ├── agent.js      # POST /api/agent/run — spawns Python agent
-│       ├── telemetry.js  # GET /api/stream/:target — SSE log stream
-│       └── config.js     # GET/POST /api/config — Prompt Security key
+│       ├── agent.js          # POST /api/agent/run — spawns Python agent
+│       ├── telemetry.js      # GET /api/stream/:target — SSE log stream
+│       └── config.js         # GET/POST /api/config — Prompt Security key
 │
-└── web/                  # React + Vite frontend
+└── web/                      # React + Vite frontend
     └── src/
         ├── App.jsx
+        ├── data/
+        │   └── attackCategories.js    # Scenario definitions for both categories
         └── components/
-            ├── AttackPanel.jsx   # 6 scenario cards + launch button
-            ├── TelemetryPane.jsx # SSE log display with color-coded levels
-            └── ConfigPanel.jsx   # API key input
+            ├── LandingPage.jsx        # Entry screen with Matrix rain animation
+            ├── CategoryPage.jsx       # Category selection grid
+            ├── AttackPanel.jsx        # MCP scenario cards + launch button
+            ├── SplitScreen.jsx        # Side-by-side telemetry display
+            ├── TelemetryPane.jsx      # SSE log display with color-coded levels
+            ├── EmployeeProtectionPanel.jsx  # Employee risk scenario cards
+            ├── MatrixRain.jsx         # Canvas animation
+            ├── Header.jsx             # Top bar with config toggle
+            └── ConfigPanel.jsx        # Prompt Security API key input
 ```
 
 ---
