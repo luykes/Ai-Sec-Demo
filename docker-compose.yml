@@ -9,8 +9,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - certbot-etc:/etc/letsencrypt:ro
-      - certbot-www:/var/www/certbot
+      - ./certbot-etc:/etc/letsencrypt:ro
+      - ./certbot-www:/var/www/certbot
     environment:
       - DOMAIN=${DOMAIN}
     depends_on:
@@ -29,8 +29,8 @@ services:
   certbot:
     image: certbot/certbot
     volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-www:/var/www/certbot
+      - ./certbot-etc:/etc/letsencrypt
+      - ./certbot-www:/var/www/certbot
     entrypoint: >
       /bin/sh -c "trap exit TERM;
       while :; do
@@ -82,6 +82,4 @@ services:
       - no-new-privileges:true
 
 volumes:
-  certbot-etc:
-  certbot-www:
   ollama-data:
