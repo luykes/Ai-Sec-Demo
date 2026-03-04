@@ -11,7 +11,7 @@ export default function Header({ configOpen, onToggleConfig, onBack, activeCateg
         )}
         <div style={styles.logo}>
           <span style={styles.logoIcon}>⬡</span>
-          <span style={styles.logoText}>PromptAI</span>
+          <span style={styles.logoText}>AI-Sec</span>
           <span style={styles.logoSub}>Security Demo</span>
         </div>
         <div style={styles.tagline}>

@@ -1,5 +1,5 @@
 #!/bin/bash
-# PromptAI — one-time Let's Encrypt setup
+# AI-Sec — one-time Let's Encrypt setup
 # Run this ONCE on the server to get your SSL certificate, then never again.
 # Renewal is handled automatically by the certbot container.
 set -e
@@ -18,7 +18,7 @@ if [ -z "$DOMAIN" ] || [ -z "$LE_EMAIL" ]; then
 fi
 
 echo ""
-echo "=== PromptAI Let's Encrypt Setup ==="
+echo "=== AI-Sec Let's Encrypt Setup ==="
 echo "Domain : $DOMAIN"
 echo "Email  : $LE_EMAIL"
 echo ""
@@ -73,7 +73,7 @@ docker compose exec ollama ollama pull llama3.2:3b
 
 echo ""
 echo "=================================================================="
-echo " DONE! PromptAI is live at https://$DOMAIN"
+echo " DONE! AI-Sec is live at https://$DOMAIN"
 echo ""
 echo " Next steps:"
 echo "  1. Open https://$DOMAIN in your browser"

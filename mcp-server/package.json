@@ -1,7 +1,7 @@
 {
-  "name": "promptai-mcp-server",
+  "name": "ai-sec-mcp-server",
   "version": "1.0.0",
-  "description": "Deliberately vulnerable MCP server for PromptAI security demo",
+  "description": "Deliberately vulnerable MCP server for AI-Sec security demo",
   "type": "module",
   "main": "server.js",
   "scripts": {

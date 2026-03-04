@@ -144,7 +144,7 @@ async function protectedExecute(toolName, toolArgs, executeFn) {
 // Factory: create a fresh MCP server per session
 function createMcpServer() {
   const server = new McpServer({
-    name: 'promptai-vulnerable-server',
+    name: 'ai-sec-vulnerable-server',
     version: '1.0.0',
   });
 

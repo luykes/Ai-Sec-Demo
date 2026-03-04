@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MatrixRain from './MatrixRain.jsx';
 
-const TITLE = 'PROMPT_AI';
+const TITLE = 'AI-SEC';
 
 export default function LandingPage({ onEnter }) {
   const [typedTitle, setTypedTitle] = useState('');

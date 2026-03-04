@@ -1,7 +1,7 @@
 {
-  "name": "promptai-backend",
+  "name": "ai-sec-backend",
   "version": "1.0.0",
-  "description": "Express API bridge for PromptAI demo",
+  "description": "Express API bridge for AI-Sec demo",
   "type": "module",
   "main": "index.js",
   "scripts": {

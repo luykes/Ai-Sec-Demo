@@ -80,7 +80,7 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
 
         <div style={styles.footer}>
           <span style={styles.footerText}>
-            SYSTEM: PromptAI Security Lab v1.0 :: Powered by Ollama llama3.2 + Prompt Security
+            SYSTEM: AI-Sec Security Lab v1.0 :: Powered by Ollama llama3.2 + Prompt Security
           </span>
         </div>
       </div>

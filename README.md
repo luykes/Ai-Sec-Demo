@@ -1,4 +1,4 @@
-# PromptAI — MCP Attack & Defense Demo
+# AI-Sec — MCP Attack & Defense Demo
 
 A live, side-by-side demonstration of how an LLM agent can attack an MCP (Model Context Protocol) server — and how Prompt Security stops it in real time.
 

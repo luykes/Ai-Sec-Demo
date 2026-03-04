@@ -1,5 +1,5 @@
 #!/bin/bash
-# PromptAI — VPS firewall setup (ufw)
+# AI-Sec — VPS firewall setup (ufw)
 # Run this ONCE after provisioning the server, before running init-letsencrypt.sh.
 # Requires: sudo / root
 set -e

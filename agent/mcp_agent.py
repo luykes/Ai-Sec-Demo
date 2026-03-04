@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PromptAI Agentic Attacker — Scripted + Ollama Commentary Edition
+AI-Sec Agentic Attacker — Scripted + Ollama Commentary Edition
 
 Tool execution is fully scripted per scenario (zero hallucination).
 Ollama (llama3.2) generates authentic attacker commentary after each result
@@ -238,7 +238,7 @@ async def run_agent(target: str, scenarios: list[str], username: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PromptAI Scripted Attacker with Ollama Commentary")
+    parser = argparse.ArgumentParser(description="AI-Sec Scripted Attacker with Ollama Commentary")
     parser.add_argument("--target", choices=["raw", "protected"], required=True)
     parser.add_argument(
         "--scenario",

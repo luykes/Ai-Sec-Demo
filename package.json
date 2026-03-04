@@ -1,7 +1,7 @@
 {
-  "name": "promptai-homebrew-server",
+  "name": "ai-sec-homebrew-server",
   "version": "1.0.0",
-  "description": "PromptAI Security Demo — deliberately vulnerable MCP server with Prompt Security integration",
+  "description": "AI-Sec Security Demo — deliberately vulnerable MCP server with Prompt Security integration",
   "private": true,
   "scripts": {
     "install:all": "npm install && cd backend && npm install && cd ../web && npm install && cd ../mcp-server && npm install",
