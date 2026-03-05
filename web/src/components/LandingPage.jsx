@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MatrixRain from './MatrixRain.jsx';
+import GalagaBackground from './GalagaBackground.jsx';
 
 const TITLE = 'AI-SEC';
 
@@ -32,14 +32,14 @@ export default function LandingPage({ onEnter }) {
 
   return (
     <div style={styles.root}>
-      <div style={styles.rainContainer}>
-        <MatrixRain style={{ opacity: 0.35 }} />
+      <div style={styles.bgContainer}>
+        <GalagaBackground style={{ opacity: 0.75 }} />
       </div>
 
       <div style={styles.hero}>
         <div style={styles.glowPanel}>
           <div style={styles.terminalLine}>
-            <span style={styles.prompt}>root@mcp-lab:~$</span>
+            <span style={styles.prompt}>PLAYER&nbsp;1&nbsp;READY</span>
             <span style={styles.blinkCursor}>_</span>
           </div>
 
@@ -116,23 +116,23 @@ const statStyles = {
     flexDirection: 'column',
     alignItems: 'center',
     padding: '8px 18px',
-    border: '1px solid #003300',
+    border: '1px solid #001a40',
     borderRadius: 2,
-    background: 'rgba(0, 255, 65, 0.03)',
+    background: 'rgba(0, 229, 255, 0.03)',
   },
   badgeHighlight: {
-    border: '1px solid #00ff41',
-    background: 'rgba(0, 255, 65, 0.08)',
+    border: '1px solid #00e5ff',
+    background: 'rgba(0, 229, 255, 0.08)',
   },
   value: {
     fontSize: 20,
     fontWeight: 700,
-    color: '#00ff41',
+    color: '#00e5ff',
     fontFamily: 'JetBrains Mono, monospace',
   },
   label: {
     fontSize: 10,
-    color: '#005500',
+    color: '#003366',
     textTransform: 'uppercase',
     letterSpacing: '1px',
     fontFamily: 'JetBrains Mono, monospace',
@@ -145,13 +145,13 @@ const styles = {
     position: 'relative',
     width: '100%',
     height: '100vh',
-    background: '#000000',
+    background: '#000011',
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  rainContainer: {
+  bgContainer: {
     position: 'absolute',
     inset: 0,
     zIndex: 0,
@@ -171,38 +171,39 @@ const styles = {
     alignItems: 'center',
     gap: 20,
     padding: '48px 56px',
-    background: 'rgba(0, 17, 0, 0.88)',
-    border: '1px solid #00ff41',
+    background: 'rgba(0, 8, 24, 0.90)',
+    border: '1px solid #00e5ff',
     borderRadius: 2,
     boxShadow:
-      '0 0 60px rgba(0, 255, 65, 0.15), inset 0 0 40px rgba(0, 255, 65, 0.03)',
+      '0 0 60px rgba(0, 229, 255, 0.15), inset 0 0 40px rgba(0, 229, 255, 0.03)',
     maxWidth: 680,
     width: '90%',
-    backdropFilter: 'blur(4px)',
+    backdropFilter: 'blur(6px)',
   },
   terminalLine: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 12,
-    color: '#00b32c',
+    color: '#ffeb00',
     alignSelf: 'flex-start',
     display: 'flex',
     gap: 6,
+    letterSpacing: '2px',
   },
   prompt: {
-    color: '#00b32c',
+    color: '#ffeb00',
   },
   blinkCursor: {
-    color: '#00ff41',
+    color: '#00e5ff',
     animation: 'pulse 1s infinite',
   },
   title: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 64,
     fontWeight: 700,
-    color: '#00ff41',
+    color: '#00e5ff',
     letterSpacing: '8px',
     textShadow:
-      '0 0 20px rgba(0, 255, 65, 0.8), 0 0 40px rgba(0, 255, 65, 0.4)',
+      '0 0 20px rgba(0, 229, 255, 0.9), 0 0 50px rgba(0, 229, 255, 0.4)',
     margin: 0,
     textAlign: 'center',
     minHeight: 80,
@@ -210,13 +211,13 @@ const styles = {
   titleGlitch: {
     transform: 'translateX(2px)',
     textShadow:
-      '2px 0 #ff0000, -2px 0 #00ffff, 0 0 20px rgba(0, 255, 65, 0.8)',
+      '2px 0 #ff1a44, -2px 0 #ffeb00, 0 0 20px rgba(0, 229, 255, 0.9)',
     transition: 'none',
   },
   subtitle: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 12,
-    color: '#00b32c',
+    color: '#0099cc',
     letterSpacing: '1px',
     textTransform: 'uppercase',
     textAlign: 'center',
@@ -224,14 +225,14 @@ const styles = {
   divider: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 12,
-    color: '#003300',
+    color: '#001a40',
     letterSpacing: 0,
     userSelect: 'none',
   },
   bodyText: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 12,
-    color: '#008800',
+    color: '#006699',
     lineHeight: 1.8,
     textAlign: 'center',
     maxWidth: 520,
@@ -244,34 +245,34 @@ const styles = {
   },
   enterBtn: {
     background: 'transparent',
-    border: '2px solid #00ff41',
+    border: '2px solid #00e5ff',
     borderRadius: 2,
-    color: '#00ff41',
+    color: '#00e5ff',
     padding: '14px 40px',
     fontSize: 16,
     fontWeight: 700,
     fontFamily: 'JetBrains Mono, monospace',
     letterSpacing: '3px',
     cursor: 'pointer',
-    boxShadow: '0 0 20px rgba(0, 255, 65, 0.25)',
+    boxShadow: '0 0 20px rgba(0, 229, 255, 0.25)',
     transition: 'all 0.15s',
     marginTop: 8,
   },
   enterBtnHovered: {
-    background: 'rgba(0, 255, 65, 0.08)',
-    boxShadow: '0 0 40px rgba(0, 255, 65, 0.5)',
+    background: 'rgba(0, 229, 255, 0.08)',
+    boxShadow: '0 0 40px rgba(0, 229, 255, 0.5)',
   },
   enterBtnPrefix: {
-    color: '#00b32c',
+    color: '#0099cc',
   },
   enterBtnSuffix: {
-    color: '#005500',
+    color: '#003366',
     fontSize: 12,
   },
   warningText: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 10,
-    color: '#003300',
+    color: '#002244',
     letterSpacing: '1px',
     textAlign: 'center',
   },

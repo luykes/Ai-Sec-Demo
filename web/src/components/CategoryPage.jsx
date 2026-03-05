@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { ATTACK_CATEGORIES } from '../data/attackCategories.js';
-import MatrixRain from './MatrixRain.jsx';
+import GalagaBackground from './GalagaBackground.jsx';
 
 export default function CategoryPage({ onSelectCategory, onBack }) {
   const [hoveredId, setHoveredId] = useState(null);
 
   return (
     <div style={styles.root}>
-      <MatrixRain style={{ position: 'fixed', inset: 0, opacity: 0.35, zIndex: 0 }} />
+      <GalagaBackground style={{ position: 'fixed', inset: 0, opacity: 0.55, zIndex: 0 }} />
       <div style={styles.bgGrid} />
 
       <div style={styles.content}>
@@ -16,7 +16,7 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
             &lt; BACK
           </button>
           <div style={styles.breadcrumb}>
-            <span style={styles.breadcrumbDim}>root@mcp-lab</span>
+            <span style={styles.breadcrumbDim}>PLAYER1@AI-SEC</span>
             <span style={styles.breadcrumbSep}> / </span>
             <span style={styles.breadcrumbActive}>attack-categories</span>
             <span style={styles.blinkCursor}>_</span>
@@ -56,9 +56,9 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
                         READY
                       </span>
                     </div>
-                    <h3 style={{ ...styles.cardTitle, color: '#00ff41' }}>{cat.name}</h3>
+                    <h3 style={{ ...styles.cardTitle, color: '#00e5ff' }}>{cat.name}</h3>
                     <p style={styles.cardSubtitle}>{cat.subtitle}</p>
-                    <p style={{ ...styles.cardDesc, color: '#006600' }}>{cat.description}</p>
+                    <p style={{ ...styles.cardDesc, color: '#004d77' }}>{cat.description}</p>
                     <div style={styles.cardFooter}>
                       <span style={styles.attackCount}>
                         {cat.attackCount} {cat.scenarioLabel || 'attack vectors'}
@@ -91,7 +91,7 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
 const styles = {
   root: {
     minHeight: '100vh',
-    background: '#000000',
+    background: '#000011',
     position: 'relative',
     overflow: 'hidden',
   },
@@ -99,8 +99,8 @@ const styles = {
     position: 'fixed',
     inset: 0,
     backgroundImage: `
-      linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px)
+      linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px)
     `,
     backgroundSize: '40px 40px',
     pointerEvents: 'none',
@@ -123,8 +123,8 @@ const styles = {
   },
   backBtn: {
     background: 'transparent',
-    border: '1px solid #003300',
-    color: '#00b32c',
+    border: '1px solid #001a40',
+    color: '#0099cc',
     padding: '6px 14px',
     fontSize: 12,
     fontFamily: 'JetBrains Mono, monospace',
@@ -137,11 +137,11 @@ const styles = {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 12,
   },
-  breadcrumbDim: { color: '#003300' },
-  breadcrumbSep: { color: '#005500' },
-  breadcrumbActive: { color: '#00b32c' },
+  breadcrumbDim: { color: '#001a40' },
+  breadcrumbSep: { color: '#003366' },
+  breadcrumbActive: { color: '#0099cc' },
   blinkCursor: {
-    color: '#00ff41',
+    color: '#00e5ff',
     animation: 'pulse 1s infinite',
   },
   header: {
@@ -153,15 +153,15 @@ const styles = {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 28,
     fontWeight: 700,
-    color: '#00ff41',
+    color: '#00e5ff',
     letterSpacing: '4px',
-    textShadow: '0 0 20px rgba(0, 255, 65, 0.4)',
+    textShadow: '0 0 20px rgba(0, 229, 255, 0.4)',
     margin: 0,
   },
   pageSubtitle: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 12,
-    color: '#005500',
+    color: '#003366',
     lineHeight: 1.7,
     maxWidth: 640,
   },
@@ -182,19 +182,19 @@ const styles = {
     minHeight: 220,
   },
   cardAvailable: {
-    background: '#001100',
-    border: '1px solid #003300',
+    background: '#000820',
+    border: '1px solid #001a40',
     cursor: 'pointer',
   },
   cardLocked: {
-    background: '#001100',
-    border: '1px solid #003300',
+    background: '#000820',
+    border: '1px solid #001a40',
     cursor: 'not-allowed',
   },
   cardHovered: {
-    border: '1px solid #00ff41',
-    boxShadow: '0 0 20px rgba(0, 255, 65, 0.15)',
-    background: '#001a00',
+    border: '1px solid #00e5ff',
+    boxShadow: '0 0 20px rgba(0, 229, 255, 0.15)',
+    background: '#000d28',
   },
   cardTopRow: {
     display: 'flex',
@@ -204,7 +204,7 @@ const styles = {
   cardIcon: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 13,
-    color: '#00b32c',
+    color: '#0099cc',
     letterSpacing: '-1px',
   },
   statusBadge: {
@@ -217,14 +217,9 @@ const styles = {
     border: '1px solid',
   },
   statusAvailable: {
-    color: '#00ff41',
-    borderColor: '#00ff41',
-    background: 'rgba(0, 255, 65, 0.08)',
-  },
-  statusLocked: {
-    color: '#003300',
-    borderColor: '#002200',
-    background: 'transparent',
+    color: '#00e5ff',
+    borderColor: '#00e5ff',
+    background: 'rgba(0, 229, 255, 0.08)',
   },
   comingSoonBody: {
     flex: 1,
@@ -238,12 +233,12 @@ const styles = {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 26,
     fontWeight: 800,
-    color: '#004400',
+    color: '#002244',
     letterSpacing: '6px',
     textTransform: 'uppercase',
     transform: 'rotate(-35deg)',
     whiteSpace: 'nowrap',
-    textShadow: '0 0 20px rgba(0, 255, 65, 0.15)',
+    textShadow: '0 0 20px rgba(0, 229, 255, 0.1)',
     userSelect: 'none',
   },
   cardTitle: {
@@ -256,7 +251,7 @@ const styles = {
   cardSubtitle: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 10,
-    color: '#005500',
+    color: '#003366',
     textTransform: 'uppercase',
     letterSpacing: '1px',
   },
@@ -272,37 +267,27 @@ const styles = {
     alignItems: 'center',
     marginTop: 8,
     paddingTop: 10,
-    borderTop: '1px solid #002200',
+    borderTop: '1px solid #001038',
   },
   attackCount: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 10,
-    color: '#00b32c',
+    color: '#0099cc',
   },
   launchHint: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 10,
-    color: '#00ff41',
+    color: '#00e5ff',
     letterSpacing: '0.5px',
   },
-  lockedOverlay: {
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
-  },
-  lockIcon: {
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: 12,
-    color: '#002200',
-  },
   footer: {
-    borderTop: '1px solid #001500',
+    borderTop: '1px solid #000e28',
     paddingTop: 20,
   },
   footerText: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 10,
-    color: '#002200',
+    color: '#001a40',
     letterSpacing: '0.5px',
   },
 };

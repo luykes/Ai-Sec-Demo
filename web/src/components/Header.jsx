@@ -10,7 +10,7 @@ export default function Header({ configOpen, onToggleConfig, onBack, activeCateg
           </button>
         )}
         <div style={styles.logo}>
-          <span style={styles.logoIcon}>⬡</span>
+          <span style={styles.logoIcon}>◈</span>
           <span style={styles.logoText}>AI-Sec</span>
           <span style={styles.logoSub}>Security Demo</span>
         </div>
@@ -22,11 +22,11 @@ export default function Header({ configOpen, onToggleConfig, onBack, activeCateg
       </div>
       <div style={styles.right}>
         <div style={styles.statusDots}>
-          <span style={styles.dot('#00ff41')} title="MCP Raw Server :8787" />
+          <span style={styles.dot('#00e5ff')} title="MCP Raw Server :8787" />
           <span style={styles.dotLabel}>RAW</span>
-          <span style={styles.dot('#00ff41')} title="MCP Protected Server :8788" />
+          <span style={styles.dot('#00e5ff')} title="MCP Protected Server :8788" />
           <span style={styles.dotLabel}>SAFE</span>
-          <span style={styles.dot('#00b32c')} title="Backend :3001" />
+          <span style={styles.dot('#0099cc')} title="Backend :3001" />
           <span style={styles.dotLabel}>API</span>
         </div>
         <button style={styles.configBtn} onClick={onToggleConfig}>
@@ -43,9 +43,9 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '12px 24px',
-    background: 'linear-gradient(180deg, #001100 0%, #000000 100%)',
-    borderBottom: '1px solid #003300',
-    boxShadow: '0 0 30px rgba(0, 255, 65, 0.08)',
+    background: 'linear-gradient(180deg, #000820 0%, #000011 100%)',
+    borderBottom: '1px solid #001a40',
+    boxShadow: '0 0 30px rgba(0, 229, 255, 0.06)',
     position: 'sticky',
     top: 0,
     zIndex: 100,
@@ -57,8 +57,8 @@ const styles = {
   },
   backBtn: {
     background: 'transparent',
-    border: '1px solid #003300',
-    color: '#00b32c',
+    border: '1px solid #001a40',
+    color: '#0099cc',
     borderRadius: 2,
     padding: '4px 10px',
     fontSize: 11,
@@ -73,21 +73,21 @@ const styles = {
     gap: 8,
   },
   logoIcon: {
-    fontSize: 28,
-    color: '#00ff41',
-    filter: 'drop-shadow(0 0 8px rgba(0, 255, 65, 0.8))',
+    fontSize: 26,
+    color: '#00e5ff',
+    filter: 'drop-shadow(0 0 8px rgba(0, 229, 255, 0.8))',
     lineHeight: 1,
   },
   logoText: {
     fontSize: 22,
     fontWeight: 700,
-    color: '#00ff41',
+    color: '#00e5ff',
     letterSpacing: '-0.5px',
   },
   logoSub: {
     fontSize: 11,
     fontWeight: 500,
-    color: '#00b32c',
+    color: '#0099cc',
     textTransform: 'uppercase',
     letterSpacing: '2px',
     marginLeft: 4,
@@ -96,8 +96,8 @@ const styles = {
   },
   tagline: {
     fontSize: 11,
-    color: '#004400',
-    borderLeft: '1px solid #003300',
+    color: '#002855',
+    borderLeft: '1px solid #001a40',
     paddingLeft: 16,
     letterSpacing: '0.5px',
     fontFamily: 'JetBrains Mono, monospace',
@@ -112,7 +112,7 @@ const styles = {
     alignItems: 'center',
     gap: 6,
     fontSize: 10,
-    color: '#004400',
+    color: '#002855',
     fontFamily: 'JetBrains Mono, monospace',
     letterSpacing: '0.5px',
   },
@@ -130,8 +130,8 @@ const styles = {
   },
   configBtn: {
     background: 'transparent',
-    border: '1px solid #003300',
-    color: '#00b32c',
+    border: '1px solid #001a40',
+    color: '#0099cc',
     borderRadius: 2,
     padding: '6px 14px',
     fontSize: 13,

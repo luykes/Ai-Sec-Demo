@@ -48,12 +48,12 @@ const styles = {
   dividerLine: {
     flex: 1,
     width: 1,
-    background: 'linear-gradient(180deg, transparent, #003300, transparent)',
+    background: 'linear-gradient(180deg, transparent, #001a40, transparent)',
   },
   dividerLabel: {
     fontSize: 10,
     fontWeight: 800,
-    color: '#003300',
+    color: '#001a40',
     letterSpacing: '1px',
     writingMode: 'vertical-rl',
     textOrientation: 'mixed',

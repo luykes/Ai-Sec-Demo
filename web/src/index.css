@@ -1,34 +1,34 @@
 :root {
-  --bg-base: #000000;
-  --bg-panel: #001100;
-  --bg-card: #001a00;
-  --bg-input: #002200;
-  --accent: #00ff41;
-  --accent-bright: #39ff7a;
-  --accent-glow: rgba(0, 255, 65, 0.3);
-  --accent-dim: #00b32c;
-  --text-primary: #00ff41;
-  --text-secondary: #00b32c;
-  --text-muted: #005500;
-  --border: #003300;
-  --border-accent: #00ff41;
+  --bg-base: #000011;
+  --bg-panel: #000820;
+  --bg-card: #000d28;
+  --bg-input: #001038;
+  --accent: #00e5ff;
+  --accent-bright: #44f0ff;
+  --accent-glow: rgba(0, 229, 255, 0.3);
+  --accent-dim: #0099cc;
+  --text-primary: #00e5ff;
+  --text-secondary: #0099cc;
+  --text-muted: #003366;
+  --border: #001a40;
+  --border-accent: #00e5ff;
 
   --color-blocked: #ff4444;
   --color-blocked-bg: rgba(255, 68, 68, 0.1);
-  --color-allowed: #00ff41;
-  --color-allowed-bg: rgba(0, 255, 65, 0.1);
+  --color-allowed: #00e5ff;
+  --color-allowed-bg: rgba(0, 229, 255, 0.1);
   --color-detected: #ffaa44;
   --color-detected-bg: rgba(255, 170, 68, 0.1);
   --color-tool-call: #44aaff;
   --color-tool-call-bg: rgba(68, 170, 255, 0.08);
-  --color-system: #005500;
-  --color-init: #00ff41;
-  --color-done: #00b32c;
+  --color-system: #003366;
+  --color-init: #00e5ff;
+  --color-done: #0099cc;
 
   --vulnerable-accent: #ff4444;
   --vulnerable-glow: rgba(255, 68, 68, 0.2);
-  --protected-accent: #00ff41;
-  --protected-glow: rgba(0, 255, 65, 0.2);
+  --protected-accent: #00e5ff;
+  --protected-glow: rgba(0, 229, 255, 0.2);
 }
 
 * {
@@ -76,15 +76,6 @@ input, select, textarea {
   font-family: 'JetBrains Mono', monospace;
 }
 
-@keyframes matrixFlicker {
-  0%, 100% { opacity: 1; }
-  92%       { opacity: 1; }
-  93%       { opacity: 0.97; }
-  94%       { opacity: 1; }
-  96%       { opacity: 0.95; }
-  97%       { opacity: 1; }
-}
-
 body::after {
   content: '';
   position: fixed;
@@ -93,10 +84,9 @@ body::after {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.07) 2px,
-    rgba(0, 0, 0, 0.07) 4px
+    rgba(0, 0, 0, 0.05) 2px,
+    rgba(0, 0, 0, 0.05) 4px
   );
   pointer-events: none;
   z-index: 9999;
-  animation: matrixFlicker 8s infinite;
 }

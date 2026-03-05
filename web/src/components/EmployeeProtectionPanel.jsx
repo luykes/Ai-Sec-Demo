@@ -4,7 +4,7 @@ const SEVERITY_COLORS = {
   critical: '#ff4444',
   high:     '#ffaa44',
   medium:   '#44aaff',
-  safe:     '#00ff41',
+  safe:     '#00e5ff',
 };
 
 const PLATFORMS = [
@@ -121,7 +121,7 @@ export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
 
               <div style={styles.cardNameRow}>
                 <span style={styles.cardIcon}>{scenario.icon}</span>
-                <span style={{ ...styles.cardName, color: isSafe ? '#00b32c' : '#00ff41' }}>
+                <span style={{ ...styles.cardName, color: isSafe ? '#0099cc' : '#00e5ff' }}>
                   {scenario.name}
                 </span>
               </div>
@@ -236,14 +236,14 @@ export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
 
 const styles = {
   panel: {
-    background: '#001100',
-    border: '1px solid #003300',
+    background: '#000820',
+    border: '1px solid #001a40',
     borderRadius: 4,
     overflow: 'hidden',
   },
   panelHeader: {
     padding: '14px 18px',
-    borderBottom: '1px solid #003300',
+    borderBottom: '1px solid #001a40',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -258,23 +258,23 @@ const styles = {
   panelTitle: {
     fontSize: 13,
     fontWeight: 600,
-    color: '#00ff41',
+    color: '#00e5ff',
     textTransform: 'uppercase',
     letterSpacing: '1px',
     fontFamily: 'JetBrains Mono, monospace',
   },
   scenarioCount: {
     fontSize: 11,
-    color: '#00b32c',
-    background: 'rgba(0, 255, 65, 0.08)',
-    border: '1px solid rgba(0, 255, 65, 0.2)',
+    color: '#0099cc',
+    background: 'rgba(0, 229, 255, 0.08)',
+    border: '1px solid rgba(0, 229, 255, 0.2)',
     borderRadius: 4,
     padding: '2px 8px',
     fontFamily: 'JetBrains Mono, monospace',
   },
   hint: {
     fontSize: 11,
-    color: '#004400',
+    color: '#002855',
     fontFamily: 'JetBrains Mono, monospace',
   },
   scenarioGrid: {
@@ -284,8 +284,8 @@ const styles = {
     padding: 16,
   },
   scenarioCard: {
-    background: '#001a00',
-    border: '1px solid #002500',
+    background: '#000d28',
+    border: '1px solid #001440',
     borderRadius: 4,
     padding: '12px 14px',
     display: 'flex',
@@ -294,8 +294,8 @@ const styles = {
     position: 'relative',
   },
   scenarioCardSafe: {
-    background: '#001600',
-    border: '1px solid #003300',
+    background: '#000d20',
+    border: '1px solid #001a40',
   },
   cardTop: {
     display: 'flex',
@@ -329,7 +329,7 @@ const styles = {
   cardIcon: {
     fontSize: 12,
     fontFamily: 'JetBrains Mono, monospace',
-    color: '#00b32c',
+    color: '#0099cc',
     letterSpacing: '-1px',
     flexShrink: 0,
   },
@@ -341,13 +341,13 @@ const styles = {
   },
   cardDesc: {
     fontSize: 10,
-    color: '#006600',
+    color: '#004d77',
     lineHeight: 1.5,
     fontFamily: 'JetBrains Mono, monospace',
   },
   promptPreview: {
     fontSize: 10,
-    color: '#005500',
+    color: '#003366',
     fontStyle: 'italic',
     lineHeight: 1.4,
     fontFamily: 'JetBrains Mono, monospace',
@@ -355,15 +355,15 @@ const styles = {
     WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
     overflow: 'hidden',
-    borderLeft: '2px solid #002500',
+    borderLeft: '2px solid #001440',
     paddingLeft: 8,
     flexGrow: 1,
   },
   copyBtn: {
-    background: 'rgba(0, 179, 44, 0.1)',
-    border: '1px solid #00b32c',
+    background: 'rgba(0, 153, 204, 0.1)',
+    border: '1px solid #0099cc',
     borderRadius: 3,
-    color: '#00b32c',
+    color: '#0099cc',
     padding: '6px 10px',
     fontSize: 10,
     fontWeight: 700,
@@ -375,9 +375,9 @@ const styles = {
     transition: 'border-color 0.15s, color 0.15s, background 0.15s',
   },
   copyBtnActive: {
-    borderColor: '#00ff41',
-    color: '#00ff41',
-    background: 'rgba(0, 255, 65, 0.12)',
+    borderColor: '#00e5ff',
+    color: '#00e5ff',
+    background: 'rgba(0, 229, 255, 0.12)',
   },
   platformRow: {
     display: 'flex',
@@ -385,10 +385,10 @@ const styles = {
   },
   platformBtn: {
     flex: 1,
-    background: '#001100',
-    border: '1px solid #003300',
+    background: '#000820',
+    border: '1px solid #001a40',
     borderRadius: 3,
-    color: '#00b32c',
+    color: '#0099cc',
     padding: '5px 4px',
     fontSize: 9,
     fontWeight: 600,
@@ -402,13 +402,13 @@ const styles = {
     letterSpacing: '0.3px',
   },
   platformBtnActive: {
-    borderColor: '#00ff41',
-    background: 'rgba(0, 255, 65, 0.08)',
-    color: '#00ff41',
+    borderColor: '#00e5ff',
+    background: 'rgba(0, 229, 255, 0.08)',
+    color: '#00e5ff',
   },
   platformGlyph: {
     fontSize: 9,
-    color: '#005500',
+    color: '#003366',
     fontFamily: 'JetBrains Mono, monospace',
   },
   platformLabel: {
@@ -420,10 +420,10 @@ const styles = {
     bottom: 10,
     left: 14,
     right: 14,
-    background: 'rgba(0, 17, 0, 0.97)',
-    border: '1px solid #00ff41',
+    background: 'rgba(0, 8, 24, 0.97)',
+    border: '1px solid #00e5ff',
     borderRadius: 3,
-    color: '#00ff41',
+    color: '#00e5ff',
     fontSize: 10,
     fontFamily: 'JetBrains Mono, monospace',
     padding: '5px 10px',
@@ -434,14 +434,14 @@ const styles = {
   // Custom prompt section
   customSection: {
     margin: '0 16px 16px',
-    background: '#001600',
-    border: '1px solid #003300',
+    background: '#000d20',
+    border: '1px solid #001a40',
     borderRadius: 4,
     overflow: 'hidden',
   },
   customHeader: {
     padding: '10px 14px',
-    borderBottom: '1px solid #002500',
+    borderBottom: '1px solid #001440',
     display: 'flex',
     alignItems: 'center',
     gap: 12,
@@ -449,22 +449,22 @@ const styles = {
   customTitle: {
     fontSize: 11,
     fontWeight: 700,
-    color: '#00b32c',
+    color: '#0099cc',
     fontFamily: 'JetBrains Mono, monospace',
     letterSpacing: '0.5px',
     flexShrink: 0,
   },
   customHint: {
     fontSize: 10,
-    color: '#004400',
+    color: '#002855',
     fontFamily: 'JetBrains Mono, monospace',
   },
   customTextarea: {
     width: '100%',
-    background: '#001100',
+    background: '#000820',
     border: 'none',
-    borderBottom: '1px solid #002500',
-    color: '#00ff41',
+    borderBottom: '1px solid #001440',
+    color: '#00e5ff',
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 11,
     lineHeight: 1.6,
@@ -480,10 +480,10 @@ const styles = {
     alignItems: 'center',
   },
   customPlatformBtn: {
-    background: '#001100',
-    border: '1px solid #003300',
+    background: '#000820',
+    border: '1px solid #001a40',
     borderRadius: 3,
-    color: '#00b32c',
+    color: '#0099cc',
     padding: '6px 12px',
     fontSize: 10,
     fontWeight: 600,
@@ -495,9 +495,9 @@ const styles = {
   customCopyBtn: {
     marginLeft: 'auto',
     background: 'transparent',
-    border: '1px solid #003300',
+    border: '1px solid #001a40',
     borderRadius: 3,
-    color: '#004400',
+    color: '#002855',
     padding: '6px 12px',
     fontSize: 10,
     fontWeight: 700,
@@ -512,11 +512,11 @@ const styles = {
   },
   footer: {
     padding: '10px 18px',
-    borderTop: '1px solid #002200',
+    borderTop: '1px solid #001038',
   },
   footerText: {
     fontSize: 10,
-    color: '#003300',
+    color: '#001a40',
     fontFamily: 'JetBrains Mono, monospace',
     letterSpacing: '0.3px',
   },

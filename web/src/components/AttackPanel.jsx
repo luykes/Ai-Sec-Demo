@@ -83,14 +83,14 @@ export default function AttackPanel({ scenarios, categoryName, onLaunch, isRunni
 
 const styles = {
   panel: {
-    background: '#001100',
-    border: '1px solid #003300',
+    background: '#000820',
+    border: '1px solid #001a40',
     borderRadius: 4,
     overflow: 'hidden',
   },
   panelHeader: {
     padding: '14px 18px',
-    borderBottom: '1px solid #003300',
+    borderBottom: '1px solid #001a40',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -105,21 +105,21 @@ const styles = {
   panelTitle: {
     fontSize: 13,
     fontWeight: 600,
-    color: '#00ff41',
+    color: '#00e5ff',
     textTransform: 'uppercase',
     letterSpacing: '1px',
   },
   scenarioCount: {
     fontSize: 11,
-    color: '#00b32c',
-    background: 'rgba(0, 255, 65, 0.08)',
-    border: '1px solid rgba(0, 255, 65, 0.2)',
+    color: '#0099cc',
+    background: 'rgba(0, 229, 255, 0.08)',
+    border: '1px solid rgba(0, 229, 255, 0.2)',
     borderRadius: 4,
     padding: '2px 8px',
   },
   hint: {
     fontSize: 11,
-    color: '#004400',
+    color: '#002855',
   },
   scenarioGrid: {
     display: 'grid',
@@ -128,8 +128,8 @@ const styles = {
     padding: 16,
   },
   scenarioCard: {
-    background: '#001a00',
-    border: '1px solid #002500',
+    background: '#000d28',
+    border: '1px solid #001440',
     borderRadius: 4,
     padding: '10px 12px',
     display: 'flex',
@@ -149,8 +149,8 @@ const styles = {
   stepNum: {
     fontSize: 10,
     fontWeight: 700,
-    color: '#00b32c',
-    background: 'rgba(0, 255, 65, 0.1)',
+    color: '#0099cc',
+    background: 'rgba(0, 229, 255, 0.1)',
     borderRadius: '50%',
     width: 18,
     height: 18,
@@ -163,7 +163,7 @@ const styles = {
   cardIcon: {
     fontSize: 13,
     fontFamily: 'JetBrains Mono, monospace',
-    color: '#00b32c',
+    color: '#0099cc',
     letterSpacing: '-1px',
   },
   severityBadge: {
@@ -178,12 +178,12 @@ const styles = {
   cardName: {
     fontSize: 11,
     fontWeight: 600,
-    color: '#00ff41',
+    color: '#00e5ff',
     lineHeight: 1.3,
   },
   cardDesc: {
     fontSize: 10,
-    color: '#004400',
+    color: '#002855',
     lineHeight: 1.4,
   },
   cardTools: {
@@ -192,7 +192,7 @@ const styles = {
   toolCode: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 9,
-    color: '#00b32c',
+    color: '#0099cc',
   },
   actions: {
     padding: '0 16px 16px',
@@ -201,10 +201,10 @@ const styles = {
   },
   launchBtn: {
     flex: 1,
-    background: 'linear-gradient(135deg, #003b00, #001a00)',
-    border: '1px solid #00ff41',
+    background: 'linear-gradient(135deg, #001e50, #000d28)',
+    border: '1px solid #00e5ff',
     borderRadius: 4,
-    color: '#00ff41',
+    color: '#00e5ff',
     padding: '12px 20px',
     fontSize: 14,
     fontWeight: 700,
@@ -213,19 +213,19 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    boxShadow: '0 4px 20px rgba(0, 255, 65, 0.25)',
+    boxShadow: '0 4px 20px rgba(0, 229, 255, 0.2)',
     transition: 'all 0.2s',
     letterSpacing: '1px',
   },
   launchBtnRunning: {
-    background: 'rgba(0, 59, 0, 0.4)',
+    background: 'rgba(0, 30, 60, 0.4)',
     boxShadow: 'none',
     cursor: 'not-allowed',
-    border: '1px solid #003300',
-    color: '#00b32c',
+    border: '1px solid #001a40',
+    color: '#0099cc',
   },
   launchBtnGlyph: {
-    color: '#00b32c',
+    color: '#0099cc',
     fontFamily: 'JetBrains Mono, monospace',
   },
   stopBtn: {
@@ -241,8 +241,8 @@ const styles = {
   spinner: {
     width: 14,
     height: 14,
-    border: '2px solid rgba(0, 255, 65, 0.3)',
-    borderTop: '2px solid #00ff41',
+    border: '2px solid rgba(0, 229, 255, 0.3)',
+    borderTop: '2px solid #00e5ff',
     borderRadius: '50%',
     display: 'inline-block',
     animation: 'spin 0.8s linear infinite',

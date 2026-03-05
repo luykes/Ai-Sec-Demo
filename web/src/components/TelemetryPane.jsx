@@ -3,20 +3,20 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 const LEVEL_STYLES = {
   BLOCKED:       { color: '#ff4444', bg: 'rgba(255, 68, 68, 0.08)',    icon: '🚫', bold: true  },
   OUTPUT_BLOCKED:{ color: '#ff6600', bg: 'rgba(255, 102, 0, 0.10)',    icon: '🔒', bold: true  },
-  ALLOWED:       { color: '#00ff41', bg: 'rgba(0, 255, 65, 0.06)',     icon: '✓',  bold: false },
+  ALLOWED:       { color: '#00e5ff', bg: 'rgba(0, 229, 255, 0.06)',    icon: '✓',  bold: false },
   MODIFIED:      { color: '#ffcc44', bg: 'rgba(255, 204, 68, 0.08)',   icon: '✂',  bold: true  },
   DETECTED:      { color: '#ffaa44', bg: 'rgba(255, 170, 68, 0.08)',   icon: '⚠',  bold: false },
   TOOL_CALL:     { color: '#44aaff', bg: 'rgba(68, 170, 255, 0.06)',   icon: '→',  bold: false },
-  TOOL_RESULT:   { color: '#00b32c', bg: 'rgba(0, 179, 44, 0.04)',     icon: '←',  bold: false },
-  SYSTEM:        { color: '#004400', bg: 'transparent',                icon: '·',  bold: false },
-  INIT:          { color: '#00b32c', bg: 'transparent',                icon: '◆',  bold: false },
-  DONE:          { color: '#00ff41', bg: 'rgba(0, 255, 65, 0.06)',     icon: '✦',  bold: false },
-  AGENT:         { color: '#00ff41', bg: 'transparent',                icon: '⬡',  bold: false },
+  TOOL_RESULT:   { color: '#0099cc', bg: 'rgba(0, 153, 204, 0.04)',    icon: '←',  bold: false },
+  SYSTEM:        { color: '#002855', bg: 'transparent',                icon: '·',  bold: false },
+  INIT:          { color: '#0099cc', bg: 'transparent',                icon: '◆',  bold: false },
+  DONE:          { color: '#00e5ff', bg: 'rgba(0, 229, 255, 0.06)',    icon: '✦',  bold: false },
+  AGENT:         { color: '#00e5ff', bg: 'transparent',                icon: '◈',  bold: false },
   ERROR:         { color: '#ff6666', bg: 'rgba(255, 68, 68, 0.05)',    icon: '✕',  bold: false },
-  INFO:          { color: '#005500', bg: 'transparent',                icon: '·',  bold: false },
-  TOOLS:         { color: '#00b32c', bg: 'transparent',                icon: '⚙',  bold: false },
-  ATTACK:        { color: '#00ff41', bg: 'rgba(0, 255, 65, 0.10)',     icon: '⚡', bold: true  },
-  TURN:          { color: '#00b32c', bg: 'rgba(0, 179, 44, 0.06)',     icon: '▶',  bold: true  },
+  INFO:          { color: '#003366', bg: 'transparent',                icon: '·',  bold: false },
+  TOOLS:         { color: '#0099cc', bg: 'transparent',                icon: '⚙',  bold: false },
+  ATTACK:        { color: '#00e5ff', bg: 'rgba(0, 229, 255, 0.10)',    icon: '⚡', bold: true  },
+  TURN:          { color: '#0099cc', bg: 'rgba(0, 153, 204, 0.06)',    icon: '▶',  bold: true  },
 };
 
 function getStyle(level) {
@@ -26,9 +26,6 @@ function getStyle(level) {
 export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isActive, sideGlowColor }) {
   const [logs, setLogs] = useState([]);
   const [connected, setConnected] = useState(false);
-  const logEndRef = useRef(null);
-  const logContainerRef = useRef(null);
-  const isAtBottom = useRef(true);
   const esRef = useRef(null);
 
   const connect = useCallback(() => {
@@ -62,19 +59,6 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
     return cleanup;
   }, [connect]);
 
-  // Auto-scroll: only when user is already at the bottom
-  useEffect(() => {
-    if (isAtBottom.current) {
-      logEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [logs]);
-
-  const handleScroll = useCallback(() => {
-    const el = logContainerRef.current;
-    if (!el) return;
-    isAtBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight < 60;
-  }, []);
-
   const clearLogs = () => setLogs([]);
 
   return (
@@ -105,7 +89,7 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
         </div>
       </div>
 
-      <div ref={logContainerRef} onScroll={handleScroll} style={styles.logContainer}>
+      <div style={styles.logContainer}>
         {logs.length === 0 && (
           <div style={styles.emptyState}>
             <div style={styles.emptyIcon}>⬡</div>
@@ -140,7 +124,6 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
             </div>
           );
         })}
-        <div ref={logEndRef} />
       </div>
     </div>
   );
@@ -148,8 +131,8 @@ export default function TelemetryPane({ title, badge, badgeColor, streamUrl, isA
 
 const styles = {
   pane: {
-    background: '#001100',
-    border: '1px solid #003300',
+    background: '#000820',
+    border: '1px solid #001a40',
     borderRadius: 4,
     overflow: 'hidden',
     display: 'flex',
@@ -161,7 +144,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px 14px',
-    borderBottom: '1px solid #002200',
+    borderBottom: '1px solid #001038',
     background: 'rgba(0, 0, 0, 0.3)',
     flexShrink: 0,
   },
@@ -182,7 +165,7 @@ const styles = {
   titleText: {
     fontSize: 12,
     fontWeight: 600,
-    color: '#005500',
+    color: '#003366',
   },
   connDot: {
     width: 7,
@@ -197,14 +180,14 @@ const styles = {
   },
   logCount: {
     fontSize: 10,
-    color: '#004400',
+    color: '#002855',
     fontFamily: 'JetBrains Mono, monospace',
   },
   clearBtn: {
     background: 'transparent',
-    border: '1px solid #002200',
+    border: '1px solid #001038',
     borderRadius: 4,
-    color: '#004400',
+    color: '#002855',
     fontSize: 10,
     padding: '3px 8px',
     cursor: 'pointer',
@@ -227,21 +210,21 @@ const styles = {
     justifyContent: 'center',
     padding: '60px 20px',
     gap: 10,
-    color: '#002200',
+    color: '#001a40',
   },
   emptyIcon: {
     fontSize: 40,
-    color: '#002200',
+    color: '#001a40',
   },
   emptyText: {
     fontSize: 13,
-    color: '#003300',
+    color: '#002244',
     fontWeight: 500,
     fontFamily: 'JetBrains Mono, monospace',
   },
   emptyHint: {
     fontSize: 11,
-    color: '#002200',
+    color: '#001a40',
     fontFamily: 'JetBrains Mono, monospace',
   },
   logEntry: {
@@ -253,7 +236,7 @@ const styles = {
     wordBreak: 'break-word',
   },
   logTimestamp: {
-    color: '#003300',
+    color: '#001a40',
     flexShrink: 0,
     fontSize: 10,
     paddingTop: 1,
@@ -274,7 +257,7 @@ const styles = {
     paddingTop: 2,
   },
   logMessage: {
-    color: '#005500',
+    color: '#003366',
     whiteSpace: 'pre-wrap',
     flex: 1,
   },
