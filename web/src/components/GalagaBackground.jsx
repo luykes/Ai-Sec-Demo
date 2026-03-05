@@ -88,8 +88,7 @@ export default function GalagaBackground({ style }) {
     const ENEMY_COLS = 10;
     const ENEMY_ROWS = 3;
     const S = 3;
-    const PLAYER_SPEED = 2.8;
-    const PLAYER_MARGIN = 55;
+    const PLAYER_SPEED = 2.5;
 
     let stars = [];
     let enemies = [];
@@ -100,15 +99,17 @@ export default function GalagaBackground({ style }) {
     let formationOffset = 0;
     let nextDiveAt = 200;
 
-    // Player state
+    // Formation bounds (set in initEnemies, used for player patrol)
+    let formationBaseLeft = 0;
+    let formationBaseRight = 0;
+
+    // Player state — simple left/right patrol
     let playerX = 0;
     let playerVx = PLAYER_SPEED;
-    let playerTargeting = false; // tracking a diver?
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
-      playerX = canvas.width / 2;
       initStars();
       initEnemies();
     };
@@ -127,6 +128,11 @@ export default function GalagaBackground({ style }) {
       enemies = [];
       const spacingX = Math.min(60, (canvas.width * 0.7) / ENEMY_COLS);
       const startX = canvas.width / 2 - (spacingX * (ENEMY_COLS - 1)) / 2;
+      formationBaseLeft  = startX;
+      formationBaseRight = startX + (ENEMY_COLS - 1) * spacingX;
+      // Start ship at formation center
+      playerX = (formationBaseLeft + formationBaseRight) / 2;
+      playerVx = PLAYER_SPEED;
       for (let row = 0; row < ENEMY_ROWS; row++) {
         for (let col = 0; col < ENEMY_COLS; col++) {
           enemies.push({
@@ -219,35 +225,19 @@ export default function GalagaBackground({ style }) {
       });
       ctx.globalAlpha = 1;
 
-      // ─ Player movement (Galaga-style left/right)
-      if (divers.length > 0) {
-        // Nudge toward closest diver but don't override direction fully
-        const closest = divers.reduce((a, b) =>
-          Math.abs(a.x - playerX) < Math.abs(b.x - playerX) ? a : b
-        );
-        const dx = closest.x - playerX;
-        // Gradually steer — don't snap velocity, just bias direction
-        playerVx += Math.sign(dx) * 0.12;
-        playerVx = Math.max(-PLAYER_SPEED * 1.2, Math.min(PLAYER_SPEED * 1.2, playerVx));
-        playerTargeting = true;
-      } else {
-        playerTargeting = false;
-        // Maintain patrol speed when not targeting
-        if (Math.abs(playerVx) < PLAYER_SPEED * 0.8) {
-          playerVx = Math.sign(playerVx || 1) * PLAYER_SPEED;
-        }
-      }
+      // ─ Player movement — patrol within the formation's current bounds
+      const leftBound  = formationBaseLeft  + formationOffset;
+      const rightBound = formationBaseRight + formationOffset;
 
       playerX += playerVx;
 
-      // Hard boundary bounce — always reverses at edges regardless of targeting
-      if (playerX >= canvas.width - PLAYER_MARGIN) {
-        playerX = canvas.width - PLAYER_MARGIN;
-        playerVx = -Math.abs(playerVx);
+      if (playerX >= rightBound) {
+        playerX = rightBound;
+        playerVx = -PLAYER_SPEED;
       }
-      if (playerX <= PLAYER_MARGIN) {
-        playerX = PLAYER_MARGIN;
-        playerVx = Math.abs(playerVx);
+      if (playerX <= leftBound) {
+        playerX = leftBound;
+        playerVx = PLAYER_SPEED;
       }
 
       // ─ Player bullets
