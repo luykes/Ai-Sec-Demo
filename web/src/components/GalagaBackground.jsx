@@ -221,24 +221,34 @@ export default function GalagaBackground({ style }) {
 
       // ─ Player movement (Galaga-style left/right)
       if (divers.length > 0) {
-        // Track closest diver horizontally
+        // Nudge toward closest diver but don't override direction fully
         const closest = divers.reduce((a, b) =>
           Math.abs(a.x - playerX) < Math.abs(b.x - playerX) ? a : b
         );
         const dx = closest.x - playerX;
-        if (Math.abs(dx) > 8) {
-          playerVx = Math.sign(dx) * PLAYER_SPEED * 1.15;
-        }
+        // Gradually steer — don't snap velocity, just bias direction
+        playerVx += Math.sign(dx) * 0.12;
+        playerVx = Math.max(-PLAYER_SPEED * 1.2, Math.min(PLAYER_SPEED * 1.2, playerVx));
         playerTargeting = true;
       } else {
         playerTargeting = false;
-        // Normal back-and-forth patrol
-        if (playerX >= canvas.width - PLAYER_MARGIN) playerVx = -PLAYER_SPEED;
-        if (playerX <= PLAYER_MARGIN) playerVx = PLAYER_SPEED;
+        // Maintain patrol speed when not targeting
+        if (Math.abs(playerVx) < PLAYER_SPEED * 0.8) {
+          playerVx = Math.sign(playerVx || 1) * PLAYER_SPEED;
+        }
       }
+
       playerX += playerVx;
-      // Clamp to bounds
-      playerX = Math.max(PLAYER_MARGIN, Math.min(canvas.width - PLAYER_MARGIN, playerX));
+
+      // Hard boundary bounce — always reverses at edges regardless of targeting
+      if (playerX >= canvas.width - PLAYER_MARGIN) {
+        playerX = canvas.width - PLAYER_MARGIN;
+        playerVx = -Math.abs(playerVx);
+      }
+      if (playerX <= PLAYER_MARGIN) {
+        playerX = PLAYER_MARGIN;
+        playerVx = Math.abs(playerVx);
+      }
 
       // ─ Player bullets
       if (t % 75 === 0) {
