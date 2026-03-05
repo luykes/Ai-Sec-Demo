@@ -2,83 +2,77 @@ import React, { useEffect, useRef } from 'react';
 
 // Classic Galaga color palette
 const COLORS = {
-  bee:       '#00e5ff', // cyan bee enemies (row 2)
-  butterfly: '#cc44ff', // purple butterfly enemies (row 1)
-  boss:      '#ff4422', // red boss Galaga (row 0)
-  bossWing:  '#ffcc00', // yellow boss wings
-  player:    '#00e5ff', // cyan player ship
-  engine:    '#ffeb00', // yellow engine glow
-  laser:     '#ffffff', // white laser
-  starDim:   '#aad4ff', // blue-white dim stars
-  starBright:'#ffffff', // bright stars
+  bee:        '#00e5ff',
+  butterfly:  '#cc44ff',
+  boss:       '#ff4422',
+  bossWing:   '#ffcc00',
+  player:     '#00e5ff',
+  engine:     '#ffeb00',
+  laser:      '#ffffff',
+  starDim:    '#aad4ff',
+  starBright: '#ffffff',
 };
 
-// Draw a Galaga bee (row 2) — compact insectoid
+// Draw a Galaga bee (row 2)
 function drawBee(ctx, x, y, s, color) {
   ctx.fillStyle = color;
-  // body
   ctx.fillRect(x - s, y - s, s * 2, s * 3);
-  // head nub
   ctx.fillRect(x - s / 2, y - s * 2, s, s);
-  // left wing
   ctx.fillRect(x - s * 3, y - s / 2, s * 2, s * 2);
-  // right wing
   ctx.fillRect(x + s, y - s / 2, s * 2, s * 2);
-  // antennae
   ctx.fillRect(x - s * 2, y - s * 2, s, s);
   ctx.fillRect(x + s, y - s * 2, s, s);
 }
 
-// Draw a Galaga butterfly (row 1) — wider with 4 wings
+// Draw a Galaga butterfly (row 1)
 function drawButterfly(ctx, x, y, s, color) {
   ctx.fillStyle = color;
-  // center body
   ctx.fillRect(x - s, y - s * 2, s * 2, s * 4);
-  // upper wings
   ctx.fillRect(x - s * 3, y - s * 2, s * 2, s * 2);
   ctx.fillRect(x + s, y - s * 2, s * 2, s * 2);
-  // lower wings
   ctx.fillRect(x - s * 4, y, s * 3, s * 2);
   ctx.fillRect(x + s, y, s * 3, s * 2);
-  // head
   ctx.fillRect(x - s / 2, y - s * 3, s, s);
 }
 
-// Draw a Boss Galaga (row 0) — larger 2-color composite
+// Draw a Boss Galaga (row 0)
 function drawBoss(ctx, x, y, s, color1, color2) {
-  // Main body color1
   ctx.fillStyle = color1;
   ctx.fillRect(x - s * 2, y - s * 2, s * 4, s * 4);
-  // Head
   ctx.fillRect(x - s, y - s * 3, s * 2, s);
-  // Wings color2
   ctx.fillStyle = color2;
   ctx.fillRect(x - s * 4, y - s, s * 2, s * 3);
   ctx.fillRect(x + s * 2, y - s, s * 2, s * 3);
-  // Inner wing accents
   ctx.fillStyle = color1;
   ctx.fillRect(x - s * 3, y, s, s);
   ctx.fillRect(x + s * 2, y, s, s);
-  // Eye
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(x - s, y - s, s, s);
   ctx.fillRect(x, y - s, s, s);
 }
 
-// Draw player ship (upward-pointing arrow shape)
-function drawPlayer(ctx, x, y, s) {
+// Draw player ship — classic Galaga fighter silhouette
+function drawPlayer(ctx, x, y, s, engineFlicker) {
   ctx.fillStyle = COLORS.player;
   // fuselage
-  ctx.fillRect(x - s / 2, y - s * 3, s, s * 5);
-  // left wing
-  ctx.fillRect(x - s * 3, y, s * 2, s * 2);
-  // right wing
-  ctx.fillRect(x + s, y, s * 2, s * 2);
-  // gun tip
-  ctx.fillRect(x - s / 2, y - s * 4, s, s);
-  // engine
-  ctx.fillStyle = COLORS.engine;
+  ctx.fillRect(x - s, y - s * 4, s * 2, s * 6);
+  // left wing sweep
+  ctx.fillRect(x - s * 4, y - s, s * 3, s * 2);
+  ctx.fillRect(x - s * 5, y + s, s * 2, s);
+  // right wing sweep
+  ctx.fillRect(x + s, y - s, s * 3, s * 2);
+  ctx.fillRect(x + s * 3, y + s, s * 2, s);
+  // nose tip
+  ctx.fillRect(x - s / 2, y - s * 5, s, s);
+  // cockpit highlight
+  ctx.fillStyle = '#aaeeff';
+  ctx.fillRect(x - s / 2, y - s * 3, s, s * 2);
+  // engine glow (flickers)
+  ctx.fillStyle = engineFlicker > 0.5 ? '#ffeb00' : '#ff8800';
   ctx.fillRect(x - s, y + s * 2, s * 2, s);
+  ctx.globalAlpha *= 0.6;
+  ctx.fillRect(x - s / 2, y + s * 3, s, s);
+  ctx.globalAlpha /= 0.6;
 }
 
 export default function GalagaBackground({ style }) {
@@ -93,7 +87,9 @@ export default function GalagaBackground({ style }) {
 
     const ENEMY_COLS = 10;
     const ENEMY_ROWS = 3;
-    const S = 3; // pixel scale (sprite pixel size)
+    const S = 3;
+    const PLAYER_SPEED = 2.8;
+    const PLAYER_MARGIN = 55;
 
     let stars = [];
     let enemies = [];
@@ -102,11 +98,17 @@ export default function GalagaBackground({ style }) {
     let t = 0;
     let formationDir = 1;
     let formationOffset = 0;
-    let nextDiveAt = 220;
+    let nextDiveAt = 200;
+
+    // Player state
+    let playerX = 0;
+    let playerVx = PLAYER_SPEED;
+    let playerTargeting = false; // tracking a diver?
 
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
+      playerX = canvas.width / 2;
       initStars();
       initEnemies();
     };
@@ -125,13 +127,12 @@ export default function GalagaBackground({ style }) {
       enemies = [];
       const spacingX = Math.min(60, (canvas.width * 0.7) / ENEMY_COLS);
       const startX = canvas.width / 2 - (spacingX * (ENEMY_COLS - 1)) / 2;
-      const startY = 50;
       for (let row = 0; row < ENEMY_ROWS; row++) {
         for (let col = 0; col < ENEMY_COLS; col++) {
           enemies.push({
             id: row * ENEMY_COLS + col,
             baseX: startX + col * spacingX,
-            y: startY + row * 44,
+            y: 50 + row * 44,
             row,
             diving: false,
           });
@@ -142,7 +143,7 @@ export default function GalagaBackground({ style }) {
     const draw = () => {
       t++;
 
-      // Deep space background
+      // ─ Background
       ctx.fillStyle = '#000011';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -159,18 +160,14 @@ export default function GalagaBackground({ style }) {
       formationOffset += 0.35 * formationDir;
       if (Math.abs(formationOffset) > 28) formationDir *= -1;
 
-      // ─ Enemies (formation)
+      // ─ Formation enemies
       ctx.globalAlpha = 0.75;
       enemies.forEach((e) => {
         if (e.diving) return;
         const ex = e.baseX + formationOffset;
-        if (e.row === 0) {
-          drawBoss(ctx, ex, e.y, S, COLORS.boss, COLORS.bossWing);
-        } else if (e.row === 1) {
-          drawButterfly(ctx, ex, e.y, S, COLORS.butterfly);
-        } else {
-          drawBee(ctx, ex, e.y, S, COLORS.bee);
-        }
+        if (e.row === 0)      drawBoss(ctx, ex, e.y, S, COLORS.boss, COLORS.bossWing);
+        else if (e.row === 1) drawButterfly(ctx, ex, e.y, S, COLORS.butterfly);
+        else                  drawBee(ctx, ex, e.y, S, COLORS.bee);
       });
 
       // ─ Dive trigger
@@ -179,34 +176,39 @@ export default function GalagaBackground({ style }) {
         if (available.length > 0) {
           const target = available[Math.floor(Math.random() * available.length)];
           target.diving = true;
+
+          // Divers arc toward player then sweep down
+          const startX = target.baseX + formationOffset;
           divers.push({
-            x: target.baseX + formationOffset,
+            x: startX,
             y: target.y,
             row: target.row,
-            vy: 2.2 + Math.random() * 1.2,
-            vx: (Math.random() - 0.5) * 2.5,
+            // initial sideways arc toward player
+            vx: (playerX - startX) * 0.012 + (Math.random() - 0.5) * 1.5,
+            vy: 1.8 + Math.random() * 1.0,
             spin: 0,
+            phase: 0,
             enemyRef: target,
           });
         }
-        nextDiveAt = t + 180 + Math.floor(Math.random() * 200);
+        nextDiveAt = t + 160 + Math.floor(Math.random() * 180);
       }
 
-      // ─ Divers
+      // ─ Divers movement & draw
       divers = divers.filter((d) => {
+        d.phase += 0.04;
+        // Slight sinusoidal weave as it dives
+        d.x += d.vx + Math.sin(d.phase * 2) * 1.2;
         d.y += d.vy;
-        d.x += d.vx;
-        d.spin += 0.05;
+        d.vy = Math.min(d.vy + 0.04, 4.5); // accelerate
+        d.spin += 0.04;
+
         ctx.save();
         ctx.translate(d.x, d.y);
-        ctx.rotate(d.spin * 0.3);
-        if (d.row === 0) {
-          drawBoss(ctx, 0, 0, S, COLORS.boss, COLORS.bossWing);
-        } else if (d.row === 1) {
-          drawButterfly(ctx, 0, 0, S, COLORS.butterfly);
-        } else {
-          drawBee(ctx, 0, 0, S, COLORS.bee);
-        }
+        ctx.rotate(d.spin * 0.25);
+        if (d.row === 0)      drawBoss(ctx, 0, 0, S, COLORS.boss, COLORS.bossWing);
+        else if (d.row === 1) drawButterfly(ctx, 0, 0, S, COLORS.butterfly);
+        else                  drawBee(ctx, 0, 0, S, COLORS.bee);
         ctx.restore();
 
         if (d.y > canvas.height + 40) {
@@ -215,29 +217,50 @@ export default function GalagaBackground({ style }) {
         }
         return true;
       });
-
       ctx.globalAlpha = 1;
 
-      // ─ Player bullets (fire every ~100 frames)
-      if (t % 100 === 0) {
-        bullets.push({ x: canvas.width / 2, y: canvas.height - 50, vy: -7 });
+      // ─ Player movement (Galaga-style left/right)
+      if (divers.length > 0) {
+        // Track closest diver horizontally
+        const closest = divers.reduce((a, b) =>
+          Math.abs(a.x - playerX) < Math.abs(b.x - playerX) ? a : b
+        );
+        const dx = closest.x - playerX;
+        if (Math.abs(dx) > 8) {
+          playerVx = Math.sign(dx) * PLAYER_SPEED * 1.15;
+        }
+        playerTargeting = true;
+      } else {
+        playerTargeting = false;
+        // Normal back-and-forth patrol
+        if (playerX >= canvas.width - PLAYER_MARGIN) playerVx = -PLAYER_SPEED;
+        if (playerX <= PLAYER_MARGIN) playerVx = PLAYER_SPEED;
+      }
+      playerX += playerVx;
+      // Clamp to bounds
+      playerX = Math.max(PLAYER_MARGIN, Math.min(canvas.width - PLAYER_MARGIN, playerX));
+
+      // ─ Player bullets
+      if (t % 75 === 0) {
+        const playerY = canvas.height - 42;
+        bullets.push({ x: playerX, y: playerY, vy: -8 });
       }
       bullets = bullets.filter((b) => b.y > -10);
       bullets.forEach((b) => {
         b.y += b.vy;
-        // Laser glow
-        ctx.globalAlpha = 0.9;
+        ctx.globalAlpha = 0.95;
         ctx.fillStyle = COLORS.laser;
-        ctx.fillRect(b.x - 1, b.y, 2, 10);
-        // Tip glow
-        ctx.fillStyle = '#aae8ff';
+        ctx.fillRect(b.x - 1, b.y, 2, 12);
+        // Bright tip
+        ctx.fillStyle = '#ccf4ff';
         ctx.fillRect(b.x - 2, b.y, 4, 3);
         ctx.globalAlpha = 1;
       });
 
       // ─ Player ship
-      ctx.globalAlpha = 0.65;
-      drawPlayer(ctx, canvas.width / 2, canvas.height - 38, S);
+      const playerY = canvas.height - 42;
+      ctx.globalAlpha = 0.70;
+      drawPlayer(ctx, playerX, playerY, S, (Math.sin(t * 0.25) + 1) / 2);
       ctx.globalAlpha = 1;
 
       animId = requestAnimationFrame(draw);
