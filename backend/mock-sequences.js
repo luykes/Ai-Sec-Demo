@@ -4,7 +4,7 @@
 // Raw and protected panes run the same tool calls — only the results differ.
 
 const ENV_CONTENT = `DATABASE_URL=postgresql://admin:Sup3rS3cr3tP@ss@db.internal.acme.com:5432/production
-STRIPE_SECRET_KEY=sk_live_51DEMO1234567890abcdefghijklmnopqrstuvwxyzDEMO
+STRIPE_SECRET_KEY=sk_demo_51ACMEDEMO1234567890abcdefghijklmnopqrstuvwxyz
 OPENAI_API_KEY=sk-proj-DEMO1234567890abcdefghijklmnopqrstuvwxyzDEMO
 AWS_ACCESS_KEY_ID=AKIADEMOACCESSKEY1234
 AWS_SECRET_ACCESS_KEY=DEMOwJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
