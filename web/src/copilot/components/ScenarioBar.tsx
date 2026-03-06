@@ -33,6 +33,9 @@ export default function ScenarioBar({ scenarios, onSelect, disabled, t }: Props)
 
           {active === s.id && (
             <div className="scenario-prompts">
+              {s.configNote && (
+                <div className="scenario-config-note">{s.configNote}</div>
+              )}
               {s.prompts.map((p, i) => (
                 <button
                   key={i}
