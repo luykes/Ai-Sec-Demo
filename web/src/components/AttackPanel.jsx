@@ -6,19 +6,15 @@ const SEVERITY_COLORS = {
   medium: '#44aaff',
 };
 
-export default function AttackPanel({ scenarios, categoryName, onLaunch, isRunning, onStop }) {
+export default function AttackPanel({ scenarios, categoryName, onLaunch, isRunning, onStop, t }) {
   return (
     <div style={styles.panel}>
       <div style={styles.panelHeader}>
         <div style={styles.headerLeft}>
           <span style={styles.panelTitle}>{categoryName}</span>
-          <span style={styles.scenarioCount}>
-            {scenarios.length} scenarios — all run in sequence
-          </span>
+          <span style={styles.scenarioCount}>{t.scenariosAll(scenarios.length)}</span>
         </div>
-        <span style={styles.hint}>
-          Powered by Ollama llama3.2 — scripted tool execution, LLM commentary
-        </span>
+        <span style={styles.hint}>{t.poweredBy}</span>
       </div>
 
       <div style={styles.scenarioGrid}>
@@ -61,19 +57,19 @@ export default function AttackPanel({ scenarios, categoryName, onLaunch, isRunni
           {isRunning ? (
             <>
               <span style={styles.spinner} />
-              Running {scenarios.length} Attacks...
+              {t.running(scenarios.length)}
             </>
           ) : (
             <>
               <span style={styles.launchBtnGlyph}>&gt;_</span>
-              Execute All {scenarios.length} Attacks
+              {t.executeAll(scenarios.length)}
             </>
           )}
         </button>
 
         {isRunning && (
           <button style={styles.stopBtn} onClick={onStop}>
-            ⬛ Stop
+            {t.stopBtn}
           </button>
         )}
       </div>

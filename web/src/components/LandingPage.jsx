@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import GalagaBackground from './GalagaBackground.jsx';
+import { LANG_OPTIONS } from '../i18n.js';
 
 const TITLE = 'AI-SEC';
 
-export default function LandingPage({ onEnter }) {
+export default function LandingPage({ onEnter, lang, setLang, t }) {
   const [typedTitle, setTypedTitle] = useState('');
   const [glitchActive, setGlitchActive] = useState(false);
   const [btnHovered, setBtnHovered] = useState(false);
@@ -38,9 +39,20 @@ export default function LandingPage({ onEnter }) {
 
       <div style={styles.hero}>
         <div style={styles.glowPanel}>
-          <div style={styles.terminalLine}>
-            <span style={styles.prompt}>PLAYER&nbsp;1&nbsp;READY</span>
-            <span style={styles.blinkCursor}>_</span>
+          <div style={styles.topRow}>
+            <div style={styles.terminalLine}>
+              <span style={styles.prompt}>{t.terminalPrompt}</span>
+              <span style={styles.blinkCursor}>_</span>
+            </div>
+            <select
+              value={lang}
+              onChange={e => setLang(e.target.value)}
+              style={styles.langSelect}
+            >
+              {LANG_OPTIONS.map(l => (
+                <option key={l.code} value={l.code}>{l.flag} {l.label}</option>
+              ))}
+            </select>
           </div>
 
           <h1
@@ -55,22 +67,16 @@ export default function LandingPage({ onEnter }) {
             )}
           </h1>
 
-          <p style={styles.subtitle}>
-            MCP Attack Surface &nbsp;·&nbsp; LLM Tool Abuse &nbsp;·&nbsp; Runtime AI Controls
-          </p>
+          <p style={styles.subtitle}>{t.subtitle}</p>
 
           <div style={styles.divider}>{'━'.repeat(44)}</div>
 
-          <p style={styles.bodyText}>
-            A live demonstration of how Model Context Protocol servers can be weaponized
-            to exfiltrate secrets, execute shell commands, and bypass AI guardrails —
-            and how Prompt Security stops them in real time.
-          </p>
+          <p style={styles.bodyText}>{t.bodyText}</p>
 
           <div style={styles.statRow}>
-            <StatBadge label="Attack Vectors" value="6" />
-            <StatBadge label="Defense Layer" value="Active" highlight />
-            <StatBadge label="Real-time SSE" value="Live" />
+            <StatBadge label={t.attackVectorsLabel} value="6" />
+            <StatBadge label={t.defenseLayerLabel} value={t.defenseLayerValue} highlight />
+            <StatBadge label={t.realtimeSseLabel} value={t.realtimeSseValue} />
           </div>
 
           <button
@@ -83,13 +89,11 @@ export default function LandingPage({ onEnter }) {
             onClick={onEnter}
           >
             <span style={styles.enterBtnPrefix}>&gt;&gt;&nbsp;</span>
-            INITIALIZE DEMO
+            {t.enterBtn}
             <span style={styles.enterBtnSuffix}>&nbsp;[ENTER]</span>
           </button>
 
-          <p style={styles.warningText}>
-            [ WARNING: ATTACKS ARE SIMULATED — FOR EDUCATIONAL USE ONLY ]
-          </p>
+          <p style={styles.warningText}>[ {t.warning} ]</p>
         </div>
       </div>
     </div>
@@ -180,14 +184,30 @@ const styles = {
     width: '90%',
     backdropFilter: 'blur(6px)',
   },
+  topRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
   terminalLine: {
     fontFamily: 'JetBrains Mono, monospace',
     fontSize: 12,
     color: '#ffeb00',
-    alignSelf: 'flex-start',
     display: 'flex',
     gap: 6,
     letterSpacing: '2px',
+  },
+  langSelect: {
+    background: '#000820',
+    border: '1px solid #001a40',
+    color: '#0099cc',
+    borderRadius: 2,
+    padding: '3px 6px',
+    fontSize: 11,
+    fontFamily: 'JetBrains Mono, monospace',
+    cursor: 'pointer',
+    outline: 'none',
   },
   prompt: {
     color: '#ffeb00',

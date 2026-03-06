@@ -1,26 +1,36 @@
 import React from 'react';
+import { LANG_OPTIONS } from '../i18n.js';
 
-export default function Header({ configOpen, onToggleConfig, onBack, activeCategory }) {
+export default function Header({ configOpen, onToggleConfig, onBack, activeCategory, lang, setLang, t }) {
   return (
     <header style={styles.header}>
       <div style={styles.left}>
         {onBack && (
           <button style={styles.backBtn} onClick={onBack}>
-            &lt; CATEGORIES
+            {t.backToCategories}
           </button>
         )}
         <div style={styles.logo}>
           <span style={styles.logoIcon}>◈</span>
           <span style={styles.logoText}>AI-Sec</span>
-          <span style={styles.logoSub}>Security Demo</span>
+          <span style={styles.logoSub}>{t.logoSub}</span>
         </div>
         <div style={styles.tagline}>
           {activeCategory
-            ? `${activeCategory.name} · ${activeCategory.attackCount} vectors`
-            : 'LLM Tool Abuse · MCP Attack Surface · Runtime AI Controls'}
+            ? `${activeCategory.name} · ${activeCategory.attackCount} ${t.vectors}`
+            : t.tagline}
         </div>
       </div>
       <div style={styles.right}>
+        <select
+          value={lang}
+          onChange={e => setLang(e.target.value)}
+          style={styles.langSelect}
+        >
+          {LANG_OPTIONS.map(l => (
+            <option key={l.code} value={l.code}>{l.flag} {l.label}</option>
+          ))}
+        </select>
         <div style={styles.statusDots}>
           <span style={styles.dot('#00e5ff')} title="MCP Raw Server :8787" />
           <span style={styles.dotLabel}>RAW</span>
@@ -29,9 +39,11 @@ export default function Header({ configOpen, onToggleConfig, onBack, activeCateg
           <span style={styles.dot('#0099cc')} title="Backend :3001" />
           <span style={styles.dotLabel}>API</span>
         </div>
-        <button style={styles.configBtn} onClick={onToggleConfig}>
-          {configOpen ? '✕ Close' : '⚙ Config'}
-        </button>
+        {activeCategory?.type !== 'ai-ops-copilot' && (
+          <button style={styles.configBtn} onClick={onToggleConfig}>
+            {configOpen ? t.configClose : t.configOpen}
+          </button>
+        )}
       </div>
     </header>
   );
@@ -127,6 +139,17 @@ const styles = {
   }),
   dotLabel: {
     marginRight: 6,
+  },
+  langSelect: {
+    background: '#000820',
+    border: '1px solid #001a40',
+    color: '#0099cc',
+    borderRadius: 2,
+    padding: '4px 8px',
+    fontSize: 11,
+    fontFamily: 'JetBrains Mono, monospace',
+    cursor: 'pointer',
+    outline: 'none',
   },
   configBtn: {
     background: 'transparent',

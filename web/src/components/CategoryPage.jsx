@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ATTACK_CATEGORIES } from '../data/attackCategories.js';
 import GalagaBackground from './GalagaBackground.jsx';
+import { LANG_OPTIONS } from '../i18n.js';
 
-export default function CategoryPage({ onSelectCategory, onBack }) {
+export default function CategoryPage({ onSelectCategory, onBack, lang, setLang, t }) {
   const [hoveredId, setHoveredId] = useState(null);
 
   return (
@@ -13,8 +14,17 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
       <div style={styles.content}>
         <div style={styles.topBar}>
           <button style={styles.backBtn} onClick={onBack}>
-            &lt; BACK
+            {t.backBtn}
           </button>
+          <select
+            value={lang}
+            onChange={e => setLang(e.target.value)}
+            style={styles.langSelect}
+          >
+            {LANG_OPTIONS.map(l => (
+              <option key={l.code} value={l.code}>{l.flag} {l.label}</option>
+            ))}
+          </select>
           <div style={styles.breadcrumb}>
             <span style={styles.breadcrumbDim}>PLAYER1@AI-SEC</span>
             <span style={styles.breadcrumbSep}> / </span>
@@ -24,11 +34,8 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
         </div>
 
         <div style={styles.header}>
-          <h2 style={styles.pageTitle}>SELECT ATTACK CATEGORY</h2>
-          <p style={styles.pageSubtitle}>
-            Choose an attack vector to explore. Each category runs in both Vulnerable
-            and Protected modes simultaneously to demonstrate real-time AI defense.
-          </p>
+          <h2 style={styles.pageTitle}>{t.pageTitle}</h2>
+          <p style={styles.pageSubtitle}>{t.pageSubtitle}</p>
         </div>
 
         <div style={styles.categoryGrid}>
@@ -53,7 +60,7 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
                     <div style={styles.cardTopRow}>
                       <span style={styles.cardIcon}>{cat.icon}</span>
                       <span style={{ ...styles.statusBadge, ...styles.statusAvailable }}>
-                        READY
+                        {t.statusReady}
                       </span>
                     </div>
                     <h3 style={{ ...styles.cardTitle, color: '#00e5ff' }}>{cat.name}</h3>
@@ -61,16 +68,16 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
                     <p style={{ ...styles.cardDesc, color: '#004d77' }}>{cat.description}</p>
                     <div style={styles.cardFooter}>
                       <span style={styles.attackCount}>
-                        {cat.attackCount} {cat.scenarioLabel || 'attack vectors'}
+                        {cat.attackCount} {cat.scenarioLabel || t.attackVectors}
                       </span>
                       <span style={styles.launchHint}>
-                        {isHovered ? '[ PRESS TO LAUNCH ]' : '[ SELECT ]'}
+                        {isHovered ? t.launchHintHover : t.launchHint}
                       </span>
                     </div>
                   </>
                 ) : (
                   <div style={styles.comingSoonBody}>
-                    <span style={styles.comingSoonText}>COMING SOON</span>
+                    <span style={styles.comingSoonText}>{t.statusComingSoon}</span>
                   </div>
                 )}
               </div>
@@ -79,9 +86,7 @@ export default function CategoryPage({ onSelectCategory, onBack }) {
         </div>
 
         <div style={styles.footer}>
-          <span style={styles.footerText}>
-            SYSTEM: AI-Sec Security Lab v1.0 :: Powered by Ollama llama3.2 + Prompt Security
-          </span>
+          <span style={styles.footerText}>{t.footerSystem}</span>
         </div>
       </div>
     </div>
@@ -132,6 +137,17 @@ const styles = {
     cursor: 'pointer',
     letterSpacing: '1px',
     transition: 'border-color 0.15s',
+  },
+  langSelect: {
+    background: '#000820',
+    border: '1px solid #001a40',
+    color: '#0099cc',
+    borderRadius: 2,
+    padding: '4px 8px',
+    fontSize: 11,
+    fontFamily: 'JetBrains Mono, monospace',
+    cursor: 'pointer',
+    outline: 'none',
   },
   breadcrumb: {
     fontFamily: 'JetBrains Mono, monospace',

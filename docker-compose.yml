@@ -47,6 +47,7 @@ services:
       context: .
       dockerfile: Dockerfile.app
     environment:
+      - PORT=3001
       - OLLAMA_HOST=http://ollama:11434
       - ALLOWED_ORIGIN=https://${DOMAIN}
     env_file:

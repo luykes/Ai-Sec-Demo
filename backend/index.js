@@ -6,7 +6,7 @@ import telemetryRouter from './routes/telemetry.js';
 import jailbreakRouter from './routes/jailbreak.js';
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3003;
 
 // Restrict CORS to the frontend origin only.
 // ALLOWED_ORIGIN is set in docker-compose (https://<DOMAIN>).

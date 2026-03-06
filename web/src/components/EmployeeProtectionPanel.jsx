@@ -29,7 +29,7 @@ function launchPlatform(platformId, prompt) {
   window.open(getPlatformUrl(platformId, prompt), '_blank', 'noopener,noreferrer');
 }
 
-export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
+export default function EmployeeProtectionPanel({ scenarios, categoryName, t }) {
   // { scenarioId, type: 'platform'|'copy', platformId? }
   const [toast, setToast] = useState(null);
   const [customPrompt, setCustomPrompt] = useState('');
@@ -67,13 +67,9 @@ export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
       <div style={styles.panelHeader}>
         <div style={styles.headerLeft}>
           <span style={styles.panelTitle}>{categoryName}</span>
-          <span style={styles.scenarioCount}>
-            {scenarios.length} scenarios — click a platform to test
-          </span>
+          <span style={styles.scenarioCount}>{t.empScenarios(scenarios.length)}</span>
         </div>
-        <span style={styles.hint}>
-          Powered by Prompt Security browser extension — intercepts at the browser layer
-        </span>
+        <span style={styles.hint}>{t.empPoweredBy}</span>
       </div>
 
       <div style={styles.scenarioGrid}>
@@ -140,7 +136,7 @@ export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
                 }}
                 onClick={() => handleCopy(scenario)}
               >
-                {activeCopyToast ? '✓ COPIED' : '⧉  COPY PROMPT'}
+                {activeCopyToast ? t.copied : t.copyPrompt}
               </button>
 
               {/* Platform launch buttons */}
@@ -166,7 +162,7 @@ export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
 
               {activePlatformToast && (
                 <div style={styles.toastInCard}>
-                  ✓ Copied — opening {PLATFORMS.find((p) => p.id === activePlatformToast)?.label}...
+                  {t.openingPlatform(PLATFORMS.find((p) => p.id === activePlatformToast)?.label)}
                 </div>
               )}
             </div>
@@ -177,16 +173,14 @@ export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
       {/* Custom prompt tester */}
       <div style={styles.customSection}>
         <div style={styles.customHeader}>
-          <span style={styles.customTitle}>[TEST] Custom Prompt</span>
-          <span style={styles.customHint}>
-            Test your own Natural Language Guardrail or any custom scenario
-          </span>
+          <span style={styles.customTitle}>{t.customTitle}</span>
+          <span style={styles.customHint}>{t.customHint}</span>
         </div>
         <textarea
           style={styles.customTextarea}
           value={customPrompt}
           onChange={(e) => setCustomPrompt(e.target.value)}
-          placeholder="Type or paste your own prompt to test against any platform..."
+          placeholder={t.customPlaceholder}
           rows={3}
           spellCheck={false}
         />
@@ -218,17 +212,13 @@ export default function EmployeeProtectionPanel({ scenarios, categoryName }) {
             onClick={handleCustomCopy}
             disabled={!customPrompt.trim()}
           >
-            {customToast === 'copy' ? '✓ COPIED' : '⧉  COPY'}
+            {customToast === 'copy' ? t.copied : t.copy}
           </button>
         </div>
       </div>
 
       <div style={styles.footer}>
-        <span style={styles.footerText}>
-          [EXT] Requires Prompt Security browser extension&nbsp;·&nbsp;
-          Prompt is copied to clipboard and pre-filled where supported (ChatGPT)&nbsp;·&nbsp;
-          Extension intercepts submission in real time
-        </span>
+        <span style={styles.footerText}>{t.empFooter}</span>
       </div>
     </div>
   );

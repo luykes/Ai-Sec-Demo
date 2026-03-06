@@ -6,11 +6,26 @@ import ConfigPanel from './components/ConfigPanel.jsx';
 import LandingPage from './components/LandingPage.jsx';
 import CategoryPage from './components/CategoryPage.jsx';
 import EmployeeProtectionPanel from './components/EmployeeProtectionPanel.jsx';
+import AiOpsCopilotPanel from './components/AiOpsCopilotPanel.jsx';
+import { TRANSLATIONS } from './i18n.js';
+
+function translateScenarios(scenarios, type, t) {
+  const map = type === 'mcp' ? t.mcpScenarios : type === 'prompt-leak' ? t.leakScenarios : null;
+  if (!map) return scenarios;
+  return scenarios.map(s => {
+    const tr = map[s.id];
+    return tr ? { ...s, name: tr.name, desc: tr.desc } : s;
+  });
+}
 
 export default function App() {
   // Navigation state
   const [view, setView] = useState('landing'); // 'landing' | 'categories' | 'demo'
   const [activeCategory, setActiveCategory] = useState(null);
+
+  // Language state
+  const [lang, setLang] = useState('en');
+  const t = TRANSLATIONS[lang];
 
   // Demo state
   const [configOpen, setConfigOpen] = useState(false);
@@ -63,7 +78,7 @@ export default function App() {
   if (view === 'landing') {
     return (
       <>
-        <LandingPage onEnter={handleEnterFromLanding} />
+        <LandingPage onEnter={handleEnterFromLanding} lang={lang} setLang={setLang} t={t} />
         <style>{globalAnimations}</style>
       </>
     );
@@ -75,6 +90,9 @@ export default function App() {
         <CategoryPage
           onSelectCategory={handleSelectCategory}
           onBack={handleBackToLanding}
+          lang={lang}
+          setLang={setLang}
+          t={t}
         />
         <style>{globalAnimations}</style>
       </>
@@ -92,6 +110,9 @@ export default function App() {
         onToggleConfig={() => setConfigOpen(!configOpen)}
         onBack={handleBackToCategories}
         activeCategory={activeCategory}
+        lang={lang}
+        setLang={setLang}
+        t={t}
       />
 
       <ConfigPanel open={configOpen} onClose={() => setConfigOpen(false)} />
@@ -101,16 +122,22 @@ export default function App() {
           <EmployeeProtectionPanel
             scenarios={activeCategory?.scenarios || []}
             categoryName={activeCategory?.name || ''}
+            t={t}
           />
+        ) : activeCategory?.type === 'ai-ops-copilot' ? (
+          <div style={styles.splitContainer}>
+            <AiOpsCopilotPanel />
+          </div>
         ) : (
           <>
             <div style={styles.controlBar}>
               <AttackPanel
-                scenarios={activeCategory?.scenarios || []}
+                scenarios={translateScenarios(activeCategory?.scenarios || [], activeCategory?.type, t)}
                 categoryName={activeCategory?.name || 'Attack Scenarios'}
                 onLaunch={handleLaunch}
                 isRunning={isRunning}
                 onStop={handleStop}
+                t={t}
               />
             </div>
 
