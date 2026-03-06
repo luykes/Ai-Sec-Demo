@@ -1,39 +1,13 @@
 import React, { useState } from 'react';
 
-const COPILOT_URL = 'http://localhost:3000';
-
-// In production (HTTPS) the browser blocks http://localhost iframes as mixed content.
-// The AI Ops Copilot also isn't deployed on the VPS — it's a local-only companion app.
+// In production (HTTPS) the copilot UI is served at /copilot/ within the same origin.
+// In local dev it's a separate app on localhost:3000.
 const IS_PRODUCTION = window.location.protocol === 'https:';
+const COPILOT_URL = IS_PRODUCTION ? '/copilot/' : 'http://localhost:3000';
 
 export default function AiOpsCopilotPanel() {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
-
-  if (IS_PRODUCTION) {
-    return (
-      <div style={styles.root}>
-        <div style={styles.toolbar}>
-          <span style={styles.label}>AI OPERATIONS COPILOT</span>
-          <span style={styles.url}>{COPILOT_URL}</span>
-        </div>
-        <div style={styles.errorState}>
-          <p style={styles.errorTitle}>[ LOCAL ONLY ]</p>
-          <p style={styles.errorMsg}>
-            AI Operations Copilot runs as a separate local app on your machine.
-          </p>
-          <p style={styles.errorHint}>
-            To use it, start it locally and open the demo at http://localhost:5173
-          </p>
-          <pre style={styles.errorCode}>
-            cd "AI Operations Copilot"{'\n'}
-            make backend{'\n'}
-            make ui
-          </pre>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={styles.root}>

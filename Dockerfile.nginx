@@ -1,14 +1,24 @@
-# Stage 1: Build React app
-FROM node:20-alpine AS build
+# Stage 1: Build PromptAI React app
+FROM node:20-alpine AS build-promptai
 WORKDIR /build
 COPY web/package*.json ./
 RUN npm ci
 COPY web/ .
 RUN npm run build
 
-# Stage 2: nginx serves static files + reverse proxies /api
+# Stage 2: Build AI Operations Copilot UI at /copilot/ sub-path
+FROM node:20-alpine AS build-copilot
+WORKDIR /build
+COPY copilot/demo-ui/package*.json ./
+RUN npm ci
+COPY copilot/demo-ui/ .
+# Set base path and API base so assets + fetch calls work at /copilot/
+RUN VITE_BASE=/copilot/ VITE_API_BASE=/copilot/api npm run build
+
+# Stage 3: nginx serves both UIs + reverse proxies all /api calls
 FROM nginx:alpine
 RUN apk add --no-cache gettext
-COPY --from=build /build/dist /usr/share/nginx/html
+COPY --from=build-promptai /build/dist /usr/share/nginx/html
+COPY --from=build-copilot  /build/dist /usr/share/nginx/html/copilot
 COPY nginx/app.conf.template /etc/nginx/templates/app.conf.template
 EXPOSE 80 443

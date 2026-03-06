@@ -1,0 +1,101 @@
+services:
+
+  mcp-devops:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn mcp_devops.main:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+    environment:
+      FIXTURES_DIR: /app/fixtures/devops
+    volumes:
+      - ./fixtures:/app/fixtures:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mcp-soc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn mcp_soc.main:app --host 0.0.0.0 --port 8003
+    ports:
+      - "8003:8003"
+    environment:
+      FIXTURES_DIR: /app/fixtures/soc
+    volumes:
+      - ./fixtures:/app/fixtures:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mcp-external:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn mcp_external_malicious.main:app --host 0.0.0.0 --port 8004
+    ports:
+      - "8004:8004"
+    environment:
+      FIXTURES_DIR: /app/fixtures/docs
+    volumes:
+      - ./fixtures:/app/fixtures:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn gateway.main:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+    environment:
+      PROMPT_SECURITY_API_URL: ${PROMPT_SECURITY_API_URL:-}
+      PROMPT_SECURITY_API_KEY: ${PROMPT_SECURITY_API_KEY:-}
+      AUDIT_LOG_PATH: /app/data/audit.jsonl
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - mcp-devops
+      - mcp-soc
+      - mcp-external
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn agent.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GATEWAY_URL: http://gateway:8001
+      MCP_DEVOPS_URL: http://mcp-devops:8002
+      MCP_SOC_URL: http://mcp-soc:8003
+      MCP_EXTERNAL_URL: http://mcp-external:8004
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+      AUDIT_LOG_PATH: /app/data/audit.jsonl
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

@@ -52,16 +52,16 @@ server {
     # ── Security headers ───────────────────────────────────────────────────────
     # Force HTTPS for 1 year (including subdomains)
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    # Block iframing from any external site
-    add_header X-Frame-Options "DENY" always;
+    # Allow same-origin iframing (the AI Ops Copilot panel is iframed within this app)
+    add_header X-Frame-Options "SAMEORIGIN" always;
     # Prevent MIME-type sniffing
     add_header X-Content-Type-Options "nosniff" always;
     # Restrict referrer info sent to external sites
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     # Permissions policy — disable features the app doesn't use
     add_header Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()" always;
-    # Content Security Policy — React app (no eval, no external scripts)
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';" always;
+    # Content Security Policy — allow same-origin frames for the copilot iframe panel
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';" always;
 
     # ── Request size limit ─────────────────────────────────────────────────────
     client_max_body_size 1m;
@@ -133,5 +133,29 @@ server {
 
         limit_req zone=api_general burst=20 nodelay;
         limit_req_status 429;
+    }
+
+    # ── AI Operations Copilot — API proxy ────────────────────────────────────
+    # The copilot UI calls /copilot/api/*, we strip /copilot/api and forward to
+    # the Python agent on port 8000 (no /api prefix on the agent side).
+    location /copilot/api/ {
+        proxy_pass         http://copilot-agent:8000/;
+        proxy_http_version 1.1;
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+
+        limit_req zone=api_general burst=20 nodelay;
+        limit_req_status 429;
+    }
+
+    # ── AI Operations Copilot — static UI at /copilot/ ───────────────────────
+    location /copilot/ {
+        root  /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /copilot/index.html;
+
+        limit_req zone=static burst=30 nodelay;
     }
 }
