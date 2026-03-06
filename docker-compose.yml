@@ -153,6 +153,7 @@ services:
       - MCP_SOC_URL=http://copilot-mcp-soc:8003
       - MCP_EXTERNAL_URL=http://copilot-mcp-external:8004
       - AUDIT_LOG_PATH=/app/data/audit.jsonl
+      - OLLAMA_URL=http://ollama:11434
     volumes:
       - copilot-data:/app/data
     depends_on:
