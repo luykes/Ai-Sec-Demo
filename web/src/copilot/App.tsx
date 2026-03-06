@@ -42,6 +42,14 @@ export default function App() {
   const [lang, setLang] = useState<Lang>('en')
   const t = TRANSLATIONS[lang]
 
+  // Reset conversation when language changes so the LLM gets a clean context
+  // in the new language without old-language history polluting the request.
+  useEffect(() => {
+    setMessages([])
+    setSessionId(null)
+    setSelectedTrace(null)
+  }, [lang])
+
   const handleSaveSettings = (s: Settings) => {
     setSettings(s)
     saveSettings(s)
