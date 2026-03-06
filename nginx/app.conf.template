@@ -135,9 +135,8 @@ server {
         limit_req_status 429;
     }
 
-    # ── AI Operations Copilot — API proxy ────────────────────────────────────
-    # The copilot UI calls /copilot/api/*, we strip /copilot/api and forward to
-    # the Python agent on port 8000 (no /api prefix on the agent side).
+    # ── AI Operations Copilot — API proxy ─────────────────────────────────────
+    # Copilot calls /copilot/api/*; strip the prefix and forward to copilot-agent:8000.
     location /copilot/api/ {
         proxy_pass         http://copilot-agent:8000/;
         proxy_http_version 1.1;
@@ -150,12 +149,4 @@ server {
         limit_req_status 429;
     }
 
-    # ── AI Operations Copilot — static UI at /copilot/ ───────────────────────
-    location /copilot/ {
-        root  /usr/share/nginx/html;
-        index index.html;
-        try_files $uri $uri/ /copilot/index.html;
-
-        limit_req zone=static burst=30 nodelay;
-    }
 }

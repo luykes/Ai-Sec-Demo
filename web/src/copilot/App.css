@@ -1,0 +1,195 @@
+/* Scoped CSS variables — defined on .copilot-app so they don't conflict with parent styles */
+.copilot-app {
+  /* Color tokens */
+  --copilot-bg: #000011;
+  --copilot-surface: #000820;
+  --copilot-surface2: #000d28;
+  --copilot-border: #001a40;
+  --copilot-border-dim: #000e28;
+  --copilot-text: #c8d8e8;
+  --copilot-text-muted: #003d6b;
+  --copilot-green: #22c55e;
+  --copilot-red: #ef4444;
+  --copilot-amber: #f59e0b;
+  --copilot-blue: #00e5ff;
+  --copilot-blue-secondary: #0099cc;
+  --copilot-purple: #0099cc;
+  --copilot-cyan-glow: rgba(0, 229, 255, 0.15);
+  --copilot-cyan-glow-sm: rgba(0, 229, 255, 0.08);
+  --copilot-font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--copilot-bg);
+  color: var(--copilot-text);
+  font-family: var(--copilot-font);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.copilot-app * { box-sizing: border-box; }
+
+.copilot-app button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.copilot-app input,
+.copilot-app textarea,
+.copilot-app select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.copilot-app ::-webkit-scrollbar { width: 6px; }
+.copilot-app ::-webkit-scrollbar-track { background: transparent; }
+.copilot-app ::-webkit-scrollbar-thumb { background: #001a40; border-radius: 2px; }
+.copilot-app ::-webkit-scrollbar-thumb:hover { background: #003366; }
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 52px;
+  border-bottom: 1px solid var(--copilot-border);
+  background: var(--copilot-surface);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.header-left { display: flex; align-items: center; gap: 12px; }
+.logo {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--copilot-blue);
+  text-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+  text-transform: uppercase;
+}
+.header-sub {
+  color: var(--copilot-text-muted);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.header-right { display: flex; align-items: center; gap: 6px; }
+
+.lang-select {
+  background: var(--copilot-surface2);
+  border: 1px solid var(--copilot-border);
+  border-radius: 2px;
+  color: var(--copilot-text);
+  font-family: var(--copilot-font);
+  font-size: 11px;
+  padding: 4px 8px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+  letter-spacing: 0.5px;
+}
+.lang-select:hover, .lang-select:focus { border-color: var(--copilot-blue); }
+
+.mode-btn {
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--copilot-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+.mode-btn.active {
+  color: var(--copilot-blue);
+  background: var(--copilot-cyan-glow-sm);
+  border-color: var(--copilot-border);
+}
+.mode-btn:hover:not(.active) { color: var(--copilot-blue-secondary); border-color: var(--copilot-border); }
+
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--copilot-text-muted);
+  font-size: 15px;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.icon-btn:hover {
+  background: var(--copilot-cyan-glow-sm);
+  border-color: var(--copilot-border);
+  color: var(--copilot-blue);
+}
+
+.settings-btn {
+  width: auto;
+  padding: 4px 14px;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--copilot-blue);
+  border-color: var(--copilot-border);
+  background: var(--copilot-cyan-glow-sm);
+}
+.settings-btn::after {
+  content: ' CONFIG';
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.settings-btn:hover {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: var(--copilot-blue);
+  box-shadow: 0 0 12px var(--copilot-cyan-glow);
+  color: var(--copilot-blue);
+}
+
+.ps-toggle-btn {
+  padding: 4px 12px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+.ps-toggle-btn.ps-on {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.1);
+}
+.ps-toggle-btn.ps-on:hover {
+  background: rgba(34, 197, 94, 0.2);
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.2);
+}
+.ps-toggle-btn.ps-off {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
+}
+.ps-toggle-btn.ps-off:hover {
+  background: rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
+}
+
+.app-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}

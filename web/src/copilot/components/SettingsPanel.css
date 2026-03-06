@@ -1,0 +1,179 @@
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.settings-modal {
+  background: var(--copilot-surface);
+  border: 1px solid var(--copilot-border);
+  border-radius: 2px;
+  padding: 28px;
+  width: 480px;
+  max-width: 95vw;
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.06), 0 20px 60px rgba(0,0,0,0.8);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.settings-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--copilot-blue);
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
+.settings-close {
+  color: var(--copilot-text-muted);
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+.settings-close:hover { background: var(--copilot-surface2); color: var(--copilot-text); }
+
+.settings-desc {
+  color: var(--copilot-text-muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.settings-field {
+  margin-bottom: 16px;
+}
+
+.settings-field label {
+  display: block;
+  font-size: 12px;
+  color: var(--copilot-text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.settings-field input {
+  width: 100%;
+  background: var(--copilot-surface2);
+  border: 1px solid var(--copilot-border);
+  border-radius: 2px;
+  padding: 9px 12px;
+  color: var(--copilot-text);
+  outline: none;
+  transition: all 0.15s;
+}
+.settings-field input:focus {
+  border-color: var(--copilot-blue);
+  box-shadow: 0 0 8px var(--copilot-cyan-glow);
+}
+
+.key-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.key-input-row input { flex: 1; }
+
+.show-btn {
+  background: var(--copilot-surface2);
+  border: 1px solid var(--copilot-border);
+  border-radius: 6px;
+  padding: 9px 14px;
+  color: var(--copilot-text-muted);
+  font-size: 12px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.show-btn:hover { color: var(--copilot-text); border-color: var(--copilot-text-muted); }
+
+.settings-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--copilot-blue);
+  margin-bottom: 10px;
+  margin-top: 4px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--copilot-border);
+}
+
+.provider-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.provider-btn {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--copilot-border);
+  background: var(--copilot-surface2);
+  color: var(--copilot-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.provider-btn:hover { color: var(--copilot-blue); border-color: var(--copilot-blue); }
+.provider-btn.active {
+  background: var(--copilot-cyan-glow-sm);
+  border-color: var(--copilot-blue);
+  color: var(--copilot-blue);
+  box-shadow: 0 0 10px var(--copilot-cyan-glow);
+}
+
+.settings-note { margin-bottom: 20px; font-size: 12px; }
+.note-warn { color: var(--copilot-amber); }
+.note-ok { color: var(--copilot-green); }
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--copilot-blue);
+  border: 1px solid var(--copilot-blue);
+  border-radius: 2px;
+  padding: 8px 18px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+.btn-primary:hover {
+  background: rgba(0, 229, 255, 0.2);
+  box-shadow: 0 0 12px var(--copilot-cyan-glow);
+}
+
+.btn-secondary {
+  background: var(--copilot-surface2);
+  color: var(--copilot-text-muted);
+  border: 1px solid var(--copilot-border);
+  border-radius: 2px;
+  padding: 8px 18px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+.btn-secondary:hover { color: var(--copilot-text); border-color: var(--copilot-border); }

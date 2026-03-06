@@ -1,0 +1,88 @@
+.scenario-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--copilot-border);
+  background: var(--copilot-surface);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 100;
+}
+
+.scenario-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--copilot-text-muted);
+  margin-right: 4px;
+}
+
+.scenario-group { position: relative; }
+
+.scenario-tab {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  border: 1px solid var(--copilot-border);
+  background: var(--copilot-surface2);
+  color: var(--copilot-text);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+}
+.scenario-tab:hover, .scenario-tab.open {
+  border-color: var(--copilot-blue);
+  color: var(--copilot-blue);
+  box-shadow: 0 0 8px var(--copilot-cyan-glow);
+}
+.caret { font-size: 8px; color: var(--copilot-text-muted); }
+
+.scenario-prompts {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--copilot-surface);
+  border: 1px solid var(--copilot-border);
+  border-radius: 2px;
+  padding: 6px;
+  min-width: 260px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 229, 255, 0.05);
+}
+
+.prompt-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 2px;
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  color: var(--copilot-text);
+  transition: all 0.1s;
+}
+.prompt-btn:hover:not(:disabled) {
+  background: var(--copilot-surface2);
+  color: var(--copilot-blue);
+}
+.prompt-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.prompt-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 2px;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.badge-normal { background: rgba(34,197,94,0.12); color: var(--copilot-green); }
+.badge-attack { background: rgba(239,68,68,0.12); color: var(--copilot-red); }

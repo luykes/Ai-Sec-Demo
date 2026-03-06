@@ -10,6 +10,11 @@ export default defineConfig({
         target: 'http://localhost:3003',
         changeOrigin: true,
       },
+      '/copilot/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/copilot\/api/, ''),
+      },
     },
   },
 });
