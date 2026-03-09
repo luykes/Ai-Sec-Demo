@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Settings, Message, DemoMode } from './types'
 import { Lang, TRANSLATIONS, LANG_OPTIONS } from './i18n'
 import { SCENARIO_TRANSLATIONS } from './scenarioTranslations'

@@ -115,7 +115,7 @@ const styles = {
   },
   hint: {
     fontSize: 11,
-    color: '#002855',
+    color: 'rgba(255, 255, 255, 0.45)',
   },
   scenarioGrid: {
     display: 'grid',
@@ -179,7 +179,7 @@ const styles = {
   },
   cardDesc: {
     fontSize: 10,
-    color: '#002855',
+    color: 'rgba(255, 255, 255, 0.55)',
     lineHeight: 1.4,
   },
   cardTools: {
