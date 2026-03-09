@@ -264,7 +264,7 @@ const styles = {
   },
   hint: {
     fontSize: 11,
-    color: '#002855',
+    color: 'rgba(255, 255, 255, 0.45)',
     fontFamily: 'JetBrains Mono, monospace',
   },
   scenarioGrid: {
@@ -331,13 +331,13 @@ const styles = {
   },
   cardDesc: {
     fontSize: 10,
-    color: '#004d77',
+    color: 'rgba(255, 255, 255, 0.55)',
     lineHeight: 1.5,
     fontFamily: 'JetBrains Mono, monospace',
   },
   promptPreview: {
     fontSize: 10,
-    color: '#003366',
+    color: 'rgba(255, 255, 255, 0.4)',
     fontStyle: 'italic',
     lineHeight: 1.4,
     fontFamily: 'JetBrains Mono, monospace',
@@ -398,7 +398,7 @@ const styles = {
   },
   platformGlyph: {
     fontSize: 9,
-    color: '#003366',
+    color: 'rgba(255, 255, 255, 0.45)',
     fontFamily: 'JetBrains Mono, monospace',
   },
   platformLabel: {
@@ -446,7 +446,7 @@ const styles = {
   },
   customHint: {
     fontSize: 10,
-    color: '#002855',
+    color: 'rgba(255, 255, 255, 0.45)',
     fontFamily: 'JetBrains Mono, monospace',
   },
   customTextarea: {
@@ -487,7 +487,7 @@ const styles = {
     background: 'transparent',
     border: '1px solid #001a40',
     borderRadius: 3,
-    color: '#002855',
+    color: 'rgba(255, 255, 255, 0.55)',
     padding: '6px 12px',
     fontSize: 10,
     fontWeight: 700,
@@ -506,7 +506,7 @@ const styles = {
   },
   footerText: {
     fontSize: 10,
-    color: '#001a40',
+    color: 'rgba(255, 255, 255, 0.35)',
     fontFamily: 'JetBrains Mono, monospace',
     letterSpacing: '0.3px',
   },
