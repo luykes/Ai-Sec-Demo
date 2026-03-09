@@ -52,7 +52,10 @@ export default function ScenarioBar({ scenarios, onSelect, disabled, t }: Props)
                   <span className={`prompt-badge ${p.isAttack ? 'badge-attack' : 'badge-normal'}`}>
                     {p.isAttack ? t.badgeAttack : t.badgeNormal}
                   </span>
-                  {p.label}
+                  <span className="prompt-label-wrap">
+                    {p.label}
+                    {p.description && <span className="prompt-description">{p.description}</span>}
+                  </span>
                 </button>
               ))}
             </div>

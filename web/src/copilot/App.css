@@ -7,7 +7,7 @@
   --copilot-border: #001a40;
   --copilot-border-dim: #000e28;
   --copilot-text: #c8d8e8;
-  --copilot-text-muted: #003d6b;
+  --copilot-text-muted: rgba(255, 255, 255, 0.45);
   --copilot-green: #22c55e;
   --copilot-red: #ef4444;
   --copilot-amber: #f59e0b;

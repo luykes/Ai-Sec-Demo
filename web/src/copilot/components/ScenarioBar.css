@@ -87,6 +87,22 @@
 .badge-normal { background: rgba(34,197,94,0.12); color: var(--copilot-green); }
 .badge-attack { background: rgba(239,68,68,0.12); color: var(--copilot-red); }
 
+.prompt-label-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prompt-description {
+  display: block;
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-weight: 400;
+  white-space: normal;
+}
+
 .scenario-config-note {
   font-size: 10px;
   line-height: 1.5;
