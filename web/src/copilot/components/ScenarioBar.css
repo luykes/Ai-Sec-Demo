@@ -103,6 +103,55 @@
   white-space: normal;
 }
 
+.custom-guardrail-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.custom-guardrail-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--copilot-text-muted);
+}
+
+.custom-guardrail-input {
+  background: var(--copilot-surface);
+  border: 1px solid var(--copilot-border);
+  border-radius: 2px;
+  color: var(--copilot-text);
+  font-size: 10px;
+  line-height: 1.5;
+  padding: 6px 8px;
+  resize: vertical;
+  font-family: inherit;
+}
+.custom-guardrail-input:focus {
+  outline: none;
+  border-color: var(--copilot-blue);
+}
+.custom-guardrail-input::placeholder {
+  color: rgba(255,255,255,0.25);
+  font-style: italic;
+}
+
+.custom-guardrail-save {
+  align-self: flex-end;
+  background: var(--copilot-blue);
+  color: #000;
+  border: none;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.custom-guardrail-save:hover { opacity: 0.85; }
+
 .scenario-config-note {
   font-size: 10px;
   line-height: 1.5;
