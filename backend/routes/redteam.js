@@ -4,8 +4,6 @@ const router = express.Router();
 
 const COPILOT_URL = process.env.COPILOT_URL || 'http://copilot-agent:8000';
 
-// Proxy to the app's own copilot without passing PS credentials,
-// so the gateway falls back to mock policy and attacks are not blocked.
 router.post('/chat', async (req, res) => {
   const appId = req.headers['app-id'];
   const expectedKey = process.env.REDTEAM_API_KEY;
@@ -27,15 +25,15 @@ router.post('/chat', async (req, res) => {
       body: JSON.stringify({
         message: prompt,
         session_id: `redteam-${Date.now()}`,
-        provider: 'claude',
+        provider: 'ollama',
+        ollama_model: 'llama3.2:3b',
         language: 'en',
         history: [],
       }),
     });
 
     const data = await copilotRes.json();
-    console.log('[redteam] copilot raw response:', JSON.stringify(data));
-    res.json({ response: data.response || '', _debug: data });
+    res.json({ response: data.response || '' });
   } catch (err) {
     const timedOut = err.name === 'AbortError';
     res.status(timedOut ? 504 : 502).json({
