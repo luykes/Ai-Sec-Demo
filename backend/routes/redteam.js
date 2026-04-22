@@ -61,8 +61,9 @@ router.post('/chat', async (req, res) => {
     });
 
     const data = await anthropicRes.json();
+    console.log('[redteam] anthropic status:', anthropicRes.status, JSON.stringify(data));
     const response = data?.content?.[0]?.text || '';
-    res.json({ response });
+    res.json({ response, _debug: data });
   } catch (err) {
     const timedOut = err.name === 'AbortError';
     res.status(timedOut ? 504 : 502).json({
