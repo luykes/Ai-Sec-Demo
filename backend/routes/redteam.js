@@ -34,7 +34,8 @@ router.post('/chat', async (req, res) => {
     });
 
     const data = await copilotRes.json();
-    res.json({ response: data.response || '' });
+    console.log('[redteam] copilot raw response:', JSON.stringify(data));
+    res.json({ response: data.response || '', _debug: data });
   } catch (err) {
     const timedOut = err.name === 'AbortError';
     res.status(timedOut ? 504 : 502).json({
