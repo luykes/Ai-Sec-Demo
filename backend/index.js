@@ -4,6 +4,7 @@ import configRouter from './routes/config.js';
 import agentRouter from './routes/agent.js';
 import telemetryRouter from './routes/telemetry.js';
 import jailbreakRouter from './routes/jailbreak.js';
+import redteamRouter from './routes/redteam.js';
 
 const app = express();
 const PORT = process.env.PORT || 3003;
@@ -25,6 +26,7 @@ app.use('/api/config', configRouter);
 app.use('/api/agent', agentRouter);       // POST /api/agent/run, POST /api/agent/stop
 app.use('/api/jailbreak', jailbreakRouter); // POST /api/jailbreak/run
 app.use('/api/stream', telemetryRouter);
+app.use('/api/redteam', redteamRouter);  // PS Red Teaming target endpoint
 
 // Health check
 app.get('/api/health', (req, res) => {

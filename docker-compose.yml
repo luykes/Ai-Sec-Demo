@@ -50,6 +50,8 @@ services:
       - PORT=3001
       - OLLAMA_HOST=http://ollama:11434
       - ALLOWED_ORIGIN=https://${DOMAIN}
+      - COPILOT_URL=http://copilot-agent:8000
+      - REDTEAM_API_KEY=${REDTEAM_API_KEY:-}
     env_file:
       - .env
     volumes:
