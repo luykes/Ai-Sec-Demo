@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://ollama:11434';
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 
 // Deliberately vulnerable system prompt — fake credentials and PII so
 // PS Red Teaming attack categories score hits. All data is fictional.
@@ -38,31 +38,35 @@ router.post('/chat', async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) return res.status(400).json({ error: 'Missing prompt field' });
 
+  if (!ANTHROPIC_API_KEY) return res.status(503).json({ error: 'ANTHROPIC_API_KEY not configured' });
+
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 120000);
+  const timeout = setTimeout(() => controller.abort(), 30000);
 
   try {
-    const ollamaRes = await fetch(`${OLLAMA_HOST}/api/chat`, {
+    const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       signal: controller.signal,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
       body: JSON.stringify({
-        model: 'llama3.2:3b',
-        stream: false,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: prompt },
-        ],
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 512,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: prompt }],
       }),
     });
 
-    const data = await ollamaRes.json();
-    const response = data?.message?.content || '';
+    const data = await anthropicRes.json();
+    const response = data?.content?.[0]?.text || '';
     res.json({ response });
   } catch (err) {
     const timedOut = err.name === 'AbortError';
     res.status(timedOut ? 504 : 502).json({
-      error: timedOut ? 'Ollama timed out' : 'Ollama unreachable',
+      error: timedOut ? 'Request timed out' : 'Anthropic unreachable',
       detail: err.message,
     });
   } finally {
